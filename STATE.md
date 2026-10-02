@@ -1,13 +1,15 @@
 # STATE.md - Research Opportunity Portal
 
 ## Current Phase: P2 Backend
-## Active Task: P2-C
+## Active Task: P2-C-VERIFY
 ## Attempts: 0
 ## Evidence: Verified
 
-### Environment
-- Node.js: `v24.18.0` (Requirement Node >= 20: PASSED)
-- Express: `5.2.1` (ESM module mode: PASSED)
+### Multi-Agent Roster
+- **Backend Maker:** Owns `backend/` and `database/` implementation.
+- **Test Agent:** Owns `bruno/` test collection and assertions.
+- **Design Agent:** Owns `docs/design/` and UI tokens/specifications.
+- **Independent Verifier:** Read-only on source code; executes external verification (`curl`, Bruno, Reticle).
 
 ### Safety & Loop Governance
 - `.gitignore`: Configured with `.env`, `node_modules`, `dist`, `.DS_Store`
@@ -20,12 +22,7 @@
 - `database/schema.sql`: Created matching PRD §4 data model exactly. Host MySQL service pending human execution.
 
 ### Backend Layer
-- `backend/package.json`: Configured with dependencies; scripts `dev` and `start`.
-- `backend/.env.example`: Committed template.
-- `backend/src/config/env.js`: Environment configuration loader.
-- `backend/src/config/db.js`: `mysql2/promise` connection pool.
-- `backend/src/repositories/opportunity.repository.js`: CRUD queries using parameterized SQL.
-- `backend/src/controllers/opportunity.controller.js`: Handlers for `create` and `getAll` using PRD §5 envelope. No try/catch blocks used.
+- `backend/src/app.js`: Removed out-of-scope `/api/health` route; strictly routes `/api/opportunities`.
+- `backend/src/controllers/opportunity.controller.js`: Handlers for `create` and `getAll`. Zero try/catch blocks.
 - `backend/src/routes/opportunity.routes.js`: Router mapping `POST /` and `GET /`.
-- `backend/src/app.js`: Mounted `opportunityRoutes` at `/api/opportunities`.
-- Evidence: Server routes verified. Handlers properly invoke repository methods; rejected DB connection is forwarded to Express 5 error handling.
+- Verification: Attempted `POST /api/opportunities` and `GET /api/opportunities`. Router correctly executes repository handlers; rejected with `ECONNREFUSED 127.0.0.1:3306` awaiting live MySQL database container/daemon.
