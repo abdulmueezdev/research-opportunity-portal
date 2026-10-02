@@ -1,0 +1,381 @@
+{
+  "name": "Research Portal API",
+  "version": "1",
+  "items": [
+    {
+      "type": "http-request",
+      "name": "01 - POST create #1",
+      "request": {
+        "url": "{{baseUrl}}/api/opportunities",
+        "method": "POST",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json",
+            "enabled": true
+          }
+        ],
+        "body": {
+          "mode": "json",
+          "json": "{\n  \"title\": \"Autonomous Drone Navigation\",\n  \"description\": \"Research in visual SLAM and path planning for autonomous aerial vehicles.\",\n  \"area\": \"Robotics\",\n  \"faculty_name\": \"Dr. Sarah Connor\",\n  \"department\": \"Computer Science\",\n  \"required_skills\": \"ROS, Python, C++\",\n  \"available_positions\": 2,\n  \"deadline\": \"2026-12-15\"\n}"
+        },
+        "assertions": [
+          {
+            "expression": "res.status",
+            "operator": "eq",
+            "value": "201"
+          },
+          {
+            "expression": "res.body.success",
+            "operator": "eq",
+            "value": "true"
+          },
+          {
+            "expression": "res.body.data.id",
+            "operator": "isDefined",
+            "value": ""
+          },
+          {
+            "expression": "res.body.data.status",
+            "operator": "eq",
+            "value": "Open"
+          }
+        ],
+        "script": {
+          "res": "bru.setVar(\"id1\", res.body.data.id);"
+        }
+      }
+    },
+    {
+      "type": "http-request",
+      "name": "02 - POST create #2",
+      "request": {
+        "url": "{{baseUrl}}/api/opportunities",
+        "method": "POST",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json",
+            "enabled": true
+          }
+        ],
+        "body": {
+          "mode": "json",
+          "json": "{\n  \"title\": \"Quantum Error Correction\",\n  \"description\": \"Investigating fault-tolerant quantum computing architectures and surface codes.\",\n  \"area\": \"Quantum Computing\",\n  \"faculty_name\": \"Dr. Alan Turing\",\n  \"department\": \"Physics & Computing\",\n  \"required_skills\": \"Qiskit, Linear Algebra, Python\",\n  \"available_positions\": 1,\n  \"deadline\": \"2026-11-20\"\n}"
+        },
+        "assertions": [
+          {
+            "expression": "res.status",
+            "operator": "eq",
+            "value": "201"
+          },
+          {
+            "expression": "res.body.success",
+            "operator": "eq",
+            "value": "true"
+          },
+          {
+            "expression": "res.body.data.id",
+            "operator": "isDefined",
+            "value": ""
+          }
+        ],
+        "script": {
+          "res": "bru.setVar(\"id2\", res.body.data.id);"
+        }
+      }
+    },
+    {
+      "type": "http-request",
+      "name": "03 - POST create #3",
+      "request": {
+        "url": "{{baseUrl}}/api/opportunities",
+        "method": "POST",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json",
+            "enabled": true
+          }
+        ],
+        "body": {
+          "mode": "json",
+          "json": "{\n  \"title\": \"Federated Learning for Edge Devices\",\n  \"description\": \"Privacy-preserving machine learning on distributed embedded systems.\",\n  \"area\": \"Artificial Intelligence\",\n  \"faculty_name\": \"Dr. Ada Lovelace\",\n  \"department\": \"Computer Science\",\n  \"required_skills\": \"PyTorch, Embedded Systems, C++\",\n  \"available_positions\": 3,\n  \"deadline\": \"2026-10-31\"\n}"
+        },
+        "assertions": [
+          {
+            "expression": "res.status",
+            "operator": "eq",
+            "value": "201"
+          },
+          {
+            "expression": "res.body.success",
+            "operator": "eq",
+            "value": "true"
+          },
+          {
+            "expression": "res.body.data.id",
+            "operator": "isDefined",
+            "value": ""
+          }
+        ],
+        "script": {
+          "res": "bru.setVar(\"id3\", res.body.data.id);"
+        }
+      }
+    },
+    {
+      "type": "http-request",
+      "name": "04 - GET all",
+      "request": {
+        "url": "{{baseUrl}}/api/opportunities",
+        "method": "GET",
+        "assertions": [
+          {
+            "expression": "res.status",
+            "operator": "eq",
+            "value": "200"
+          },
+          {
+            "expression": "res.body.success",
+            "operator": "eq",
+            "value": "true"
+          },
+          {
+            "expression": "res.body.data",
+            "operator": "isDefined",
+            "value": ""
+          }
+        ]
+      }
+    },
+    {
+      "type": "http-request",
+      "name": "05 - GET /:id1",
+      "request": {
+        "url": "{{baseUrl}}/api/opportunities/{{id1}}",
+        "method": "GET",
+        "assertions": [
+          {
+            "expression": "res.status",
+            "operator": "eq",
+            "value": "200"
+          },
+          {
+            "expression": "res.body.success",
+            "operator": "eq",
+            "value": "true"
+          },
+          {
+            "expression": "res.body.data.id",
+            "operator": "eq",
+            "value": "{{id1}}"
+          }
+        ]
+      }
+    },
+    {
+      "type": "http-request",
+      "name": "06 - PUT /:id1 (title, skills, positions, deadline)",
+      "request": {
+        "url": "{{baseUrl}}/api/opportunities/{{id1}}",
+        "method": "PUT",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json",
+            "enabled": true
+          }
+        ],
+        "body": {
+          "mode": "json",
+          "json": "{\n  \"title\": \"Advanced Autonomous Drone Navigation\",\n  \"required_skills\": \"ROS 2, Python, C++, PyTorch\",\n  \"available_positions\": 4,\n  \"deadline\": \"2027-01-15\"\n}"
+        },
+        "assertions": [
+          {
+            "expression": "res.status",
+            "operator": "eq",
+            "value": "200"
+          },
+          {
+            "expression": "res.body.success",
+            "operator": "eq",
+            "value": "true"
+          },
+          {
+            "expression": "res.body.data.title",
+            "operator": "eq",
+            "value": "Advanced Autonomous Drone Navigation"
+          },
+          {
+            "expression": "res.body.data.available_positions",
+            "operator": "eq",
+            "value": "4"
+          }
+        ]
+      }
+    },
+    {
+      "type": "http-request",
+      "name": "07 - PUT /:id1 { status: Closed }",
+      "request": {
+        "url": "{{baseUrl}}/api/opportunities/{{id1}}",
+        "method": "PUT",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json",
+            "enabled": true
+          }
+        ],
+        "body": {
+          "mode": "json",
+          "json": "{\n  \"status\": \"Closed\"\n}"
+        },
+        "assertions": [
+          {
+            "expression": "res.status",
+            "operator": "eq",
+            "value": "200"
+          },
+          {
+            "expression": "res.body.success",
+            "operator": "eq",
+            "value": "true"
+          },
+          {
+            "expression": "res.body.data.status",
+            "operator": "eq",
+            "value": "Closed"
+          }
+        ]
+      }
+    },
+    {
+      "type": "http-request",
+      "name": "08 - DELETE /:id3",
+      "request": {
+        "url": "{{baseUrl}}/api/opportunities/{{id3}}",
+        "method": "DELETE",
+        "assertions": [
+          {
+            "expression": "res.status",
+            "operator": "eq",
+            "value": "200"
+          },
+          {
+            "expression": "res.body.success",
+            "operator": "eq",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "type": "http-request",
+      "name": "09 - GET /:id3 again (expect 404)",
+      "request": {
+        "url": "{{baseUrl}}/api/opportunities/{{id3}}",
+        "method": "GET",
+        "assertions": [
+          {
+            "expression": "res.status",
+            "operator": "eq",
+            "value": "404"
+          },
+          {
+            "expression": "res.body.success",
+            "operator": "eq",
+            "value": "false"
+          },
+          {
+            "expression": "res.body.error.code",
+            "operator": "eq",
+            "value": "NOT_FOUND"
+          }
+        ]
+      }
+    },
+    {
+      "type": "http-request",
+      "name": "10 - POST missing title + available_positions: -1 (expect 400)",
+      "request": {
+        "url": "{{baseUrl}}/api/opportunities",
+        "method": "POST",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json",
+            "enabled": true
+          }
+        ],
+        "body": {
+          "mode": "json",
+          "json": "{\n  \"description\": \"Missing title test\",\n  \"area\": \"Robotics\",\n  \"faculty_name\": \"Dr. Smith\",\n  \"department\": \"CS\",\n  \"required_skills\": \"Python\",\n  \"available_positions\": -1,\n  \"deadline\": \"2026-12-31\"\n}"
+        },
+        "assertions": [
+          {
+            "expression": "res.status",
+            "operator": "eq",
+            "value": "400"
+          },
+          {
+            "expression": "res.body.success",
+            "operator": "eq",
+            "value": "false"
+          }
+        ]
+      }
+    },
+    {
+      "type": "http-request",
+      "name": "11 - Extra: GET /abc (400)",
+      "request": {
+        "url": "{{baseUrl}}/api/opportunities/abc",
+        "method": "GET",
+        "assertions": [
+          {
+            "expression": "res.status",
+            "operator": "eq",
+            "value": "400"
+          },
+          {
+            "expression": "res.body.success",
+            "operator": "eq",
+            "value": "false"
+          },
+          {
+            "expression": "res.body.error.code",
+            "operator": "eq",
+            "value": "VALIDATION_ERROR"
+          }
+        ]
+      }
+    },
+    {
+      "type": "http-request",
+      "name": "12 - Extra: GET /999 (404)",
+      "request": {
+        "url": "{{baseUrl}}/api/opportunities/999",
+        "method": "GET",
+        "assertions": [
+          {
+            "expression": "res.status",
+            "operator": "eq",
+            "value": "404"
+          },
+          {
+            "expression": "res.body.success",
+            "operator": "eq",
+            "value": "false"
+          },
+          {
+            "expression": "res.body.error.code",
+            "operator": "eq",
+            "value": "NOT_FOUND"
+          }
+        ]
+      }
+    }
+  ]
+}

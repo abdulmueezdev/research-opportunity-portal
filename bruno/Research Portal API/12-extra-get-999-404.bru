@@ -1,0 +1,17 @@
+meta {
+  name: 12 - Extra: GET /999 (404)
+  type: http
+  seq: 12
+}
+
+get {
+  url: {{baseUrl}}/api/opportunities/999
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 404
+  res.body.success: eq false
+  res.body.error.code: eq NOT_FOUND
+}

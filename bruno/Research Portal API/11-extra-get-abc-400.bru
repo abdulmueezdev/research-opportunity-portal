@@ -1,0 +1,17 @@
+meta {
+  name: 11 - Extra: GET /abc (400)
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{baseUrl}}/api/opportunities/abc
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 400
+  res.body.success: eq false
+  res.body.error.code: eq VALIDATION_ERROR
+}

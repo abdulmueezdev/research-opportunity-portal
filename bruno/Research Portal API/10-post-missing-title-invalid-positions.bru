@@ -1,0 +1,28 @@
+meta {
+  name: 10 - POST missing title + available_positions: -1 (expect 400)
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{baseUrl}}/api/opportunities
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "description": "Missing title test",
+    "area": "Robotics",
+    "faculty_name": "Dr. Smith",
+    "department": "CS",
+    "required_skills": "Python",
+    "available_positions": -1,
+    "deadline": "2026-12-31"
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.success: eq false
+}

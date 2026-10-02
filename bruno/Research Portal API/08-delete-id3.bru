@@ -1,0 +1,16 @@
+meta {
+  name: 08 - DELETE /:id3
+  type: http
+  seq: 8
+}
+
+delete {
+  url: {{baseUrl}}/api/opportunities/{{id3}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.success: eq true
+}

@@ -1,0 +1,27 @@
+meta {
+  name: 06 - PUT /:id1 (title, skills, positions, deadline)
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{baseUrl}}/api/opportunities/{{id1}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "Advanced Autonomous Drone Navigation",
+    "required_skills": "ROS 2, Python, C++, PyTorch",
+    "available_positions": 4,
+    "deadline": "2027-01-15"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.success: eq true
+  res.body.data.title: eq Advanced Autonomous Drone Navigation
+  res.body.data.available_positions: eq 4
+}

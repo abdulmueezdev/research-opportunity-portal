@@ -1,0 +1,34 @@
+meta {
+  name: 02 - POST create #2
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/opportunities
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "Quantum Error Correction",
+    "description": "Investigating fault-tolerant quantum computing architectures and surface codes.",
+    "area": "Quantum Computing",
+    "faculty_name": "Dr. Alan Turing",
+    "department": "Physics & Computing",
+    "required_skills": "Qiskit, Linear Algebra, Python",
+    "available_positions": 1,
+    "deadline": "2026-11-20"
+  }
+}
+
+assert {
+  res.status: eq 201
+  res.body.success: eq true
+  res.body.data.id: isDefined
+}
+
+script:post-response {
+  bru.setVar("id2", res.body.data.id);
+}

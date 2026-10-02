@@ -1,0 +1,23 @@
+meta {
+  name: 07 - PUT /:id1 { status: Closed }
+  type: http
+  seq: 7
+}
+
+put {
+  url: {{baseUrl}}/api/opportunities/{{id1}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "status": "Closed"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.success: eq true
+  res.body.data.status: eq Closed
+}

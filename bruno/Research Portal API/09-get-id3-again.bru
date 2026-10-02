@@ -1,0 +1,17 @@
+meta {
+  name: 09 - GET /:id3 again (expect 404)
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{baseUrl}}/api/opportunities/{{id3}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 404
+  res.body.success: eq false
+  res.body.error.code: eq NOT_FOUND
+}
