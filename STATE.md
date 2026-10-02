@@ -1,7 +1,7 @@
 # STATE.md - Research Opportunity Portal
 
 ## Current Phase: P2 Backend
-## Active Task: P2-C-VERIFY
+## Active Task: P2-C-VERIFY-RETRY
 ## Attempts: 0
 ## Evidence: Verified
 
@@ -19,10 +19,10 @@
 - `docs/loop-budget.md`: Budget caps active
 
 ### Database Layer
-- `database/schema.sql`: Created matching PRD §4 data model exactly. Host MySQL service pending human execution.
+- `database/schema.sql`: Applied by human operator to local MySQL instance. Port 3306 open and responsive.
 
 ### Backend Layer
-- `backend/src/app.js`: Removed out-of-scope `/api/health` route; strictly routes `/api/opportunities`.
+- `backend/src/app.js`: Clean REST routing at `/api/opportunities`.
 - `backend/src/controllers/opportunity.controller.js`: Handlers for `create` and `getAll`. Zero try/catch blocks.
 - `backend/src/routes/opportunity.routes.js`: Router mapping `POST /` and `GET /`.
-- Verification: Attempted `POST /api/opportunities` and `GET /api/opportunities`. Router correctly executes repository handlers; rejected with `ECONNREFUSED 127.0.0.1:3306` awaiting live MySQL database container/daemon.
+- Verification Evidence: Port 3306 reachable. Executed POST and GET requests; server reached MySQL server daemon. Error transitioned from `ECONNREFUSED` to `Access denied for user 'portal'@'localhost' (using password: NO)`, indicating MySQL service is active and requires `backend/.env` password configuration from human.
