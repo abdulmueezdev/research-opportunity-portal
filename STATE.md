@@ -1,7 +1,7 @@
 # STATE.md - Research Opportunity Portal
 
 ## Current Phase: P2 Backend
-## Active Task: P2-A
+## Active Task: P2-B
 ## Attempts: 0
 ## Evidence: Verified
 
@@ -26,4 +26,5 @@
 - `backend/src/config/db.js`: `mysql2/promise` connection pool with `dateStrings: true`, `waitForConnections: true`, `connectionLimit: 10`.
 - `backend/src/app.js`: Express app configured with `express.json({ limit: "100kb" })`, CORS restricted to `FRONTEND_ORIGIN`, and `/api/health` route.
 - `backend/src/server.js`: Server entrypoint listening on PORT (4000).
-- Evidence: `GET /api/health` returned HTTP 200 with `{ status: "ok" }` and CORS header `Access-Control-Allow-Origin: http://localhost:5173`.
+- `backend/src/repositories/opportunity.repository.js`: Fully implemented CRUD repository with parameterized SQL statements (`pool.execute` with `?` placeholders) and strict column whitelist for dynamic updates. Zero string concatenation.
+- Evidence: `node --check` passed with 0 errors; ESM dynamic import verified exports `[create, getAll, getById, update, remove]`.
