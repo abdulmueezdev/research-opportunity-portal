@@ -1,7 +1,7 @@
 # STATE.md - Research Opportunity Portal
 
 ## Current Phase: P2 Backend
-## Active Task: P2-C-VERIFY (PASSED)
+## Active Task: P2-D
 ## Attempts: 0
 ## Evidence: Verified PASS
 
@@ -21,13 +21,13 @@
 ### Database Layer
 - MySQL 8 live on `127.0.0.1:3306`.
 - `schema.sql` active with `opportunities` table.
-- Credentials verified authenticating successfully via `backend/.env`.
 
 ### Backend Layer
 - `backend/src/app.js`: Configured for `/api/opportunities`.
-- `backend/src/controllers/opportunity.controller.js`: Handlers for `create` and `getAll`.
-- `backend/src/routes/opportunity.routes.js`: Router mapping `POST /` and `GET /`.
+- `backend/src/controllers/opportunity.controller.js`: Handlers for `create`, `getAll`, and `getById`.
+- `backend/src/routes/opportunity.routes.js`: Router mapping `POST /`, `GET /`, and `GET /:id`.
 - Verification Evidence:
-  - `POST /api/opportunities`: Returned `HTTP/1.1 201 Created` with full JSON envelope, `data.id = 1`, `data.status = "Open"`, and exact unshifted date string `"deadline": "2026-12-31"`.
-  - `GET /api/opportunities`: Returned `HTTP/1.1 200 OK` with JSON envelope containing array with the created opportunity.
-  - Zero 500 errors or stack traces.
+  - `GET /api/opportunities/1`: Returned `HTTP/1.1 200 OK` with JSON envelope and entity object.
+  - `GET /api/opportunities/abc`: Returned `HTTP/1.1 400 Bad Request` with `VALIDATION_ERROR`.
+  - `GET /api/opportunities/999`: Returned `HTTP/1.1 404 Not Found` with `NOT_FOUND`.
+  - Zero 500 errors or unhandled promise rejections.
