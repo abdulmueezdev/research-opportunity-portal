@@ -1,6 +1,6 @@
 import { pool } from '../config/db.js';
 
-const ALLOWED_COLUMNS = [
+export const ALLOWED_COLUMNS = [
   'title',
   'description',
   'area',
@@ -81,7 +81,7 @@ export async function update(id, data) {
   }
 
   if (updates.length === 0) {
-    return getById(id);
+    return null;
   }
 
   const sql = `UPDATE opportunities SET ${updates.join(', ')} WHERE id = ?`;

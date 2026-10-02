@@ -6,5 +6,6 @@ export const opportunityRoutes = Router();
 opportunityRoutes.post('/', opportunityController.create);
 opportunityRoutes.get('/', opportunityController.getAll);
 opportunityRoutes.get('/:id', opportunityController.getById);
+opportunityRoutes.put('/:id', opportunityController.update);
 
 export default opportunityRoutes;
