@@ -57,7 +57,7 @@ Backend first (core of the grade, no design dependency); Stitch design can run i
 
 | Phase | Tasks (IDs) | Gate (evidence required) |
 |---|---|---|
-| **P0 Foundation** | P0-A preflight: confirm Node/npm/MySQL versions, workspace path, `git init`, `.gitignore` (with `.env`), folder skeleton, `STATE.md` seeded from this roadmap · P0-B copy docs into `docs/` | `node -v` ≥ 20, `mysql --version` ≥ 8, `git status` clean, `.gitignore` shows `.env` |
+| **P0 Foundation** | P0-A preflight: confirm Node/npm/MySQL versions, workspace path, `git init`, `.gitignore` (with `.env`), folder skeleton, `STATE.md` seeded from this roadmap · P0-B copy docs into `docs/` · P0-B2 loop engineering spine (`LOOP.md`, `safety.md`, `loop-budget.md`), verify loop & skill-inspector skills | `node -v` ≥ 20, `mysql --version` ≥ 8, `git status` clean, `.gitignore` shows `.env`, loop spine files in place |
 | **P1 Database** | P1-A `database/schema.sql` · P1-B apply to local MySQL, show `DESCRIBE opportunities;` | Schema applies on a fresh DB with no errors; DESCRIBE matches PRD §4 |
 | **P2 Backend** | P2-A scaffold Express, env, pool (`dateStrings`) · P2-B repository · P2-C POST+GET list · P2-D GET one · P2-E PUT · P2-F DELETE · P2-G Zod validation + 404/error middleware | After each: `curl -i` with expected status/body; DB row check via SQL; final: all 5 endpoints + 400/404 paths |
 | **P3 API tests** | P3-A Bruno collection with 10 required + extras, variables, assertions · P3-B run whole collection · P3-C export JSON | 10/10 + extras green; export file exists in `bruno/exports/` |

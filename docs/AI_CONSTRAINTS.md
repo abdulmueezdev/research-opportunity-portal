@@ -18,7 +18,7 @@ Constraints here narrow (never widen) the general behaviour in `Complete_guide.m
 | H6 | **Validation lives in the backend** (Zod) and is mirrored in the UI for UX. The API returns the PRD error envelope and the right status code (200/201/400/404/500) — never `200` with an error body. |
 | H7 | **Do not edit root `DESIGN.md`.** If a Stitch/design skill generates a design file, write to `docs/design/extracted-design.md`. |
 | H8 | **No auto-merge, no force-push, no history rewrite.** Commits are local and small; the human pushes (or approves pushes). |
-| H9 | **One atomic task at a time** (1–3 files), verify, report, then wait. |
+| H9 | **One atomic task at a time** (1–3 files), verify, report, then wait. Follow Loop Engineering: maker-checker rule (verifiers independent of makers), no auto-merge, 50k tokens/task budget, 3-strike circuit breaker. |
 | H10 | **No fake verification.** "It should work" is not evidence. Evidence = command output, HTTP status + body, Bruno run result, or a Reticle `verified: "yes"`. |
 | H11 | **Do not use Slush branding** (name, logo, rocket/coin/wallet stickers). |
 | H12 | **Don't touch** anything outside the project folder, installed global config, or other projects in the Antigravity workspace. |
