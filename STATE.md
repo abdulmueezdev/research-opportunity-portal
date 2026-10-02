@@ -1,7 +1,7 @@
 # STATE.md - Research Opportunity Portal
 
 ## Current Phase: P2 Backend
-## Active Task: P2-B
+## Active Task: P2-C
 ## Attempts: 0
 ## Evidence: Verified
 
@@ -17,14 +17,15 @@
 - `docs/loop-budget.md`: Budget caps active
 
 ### Database Layer
-- `database/schema.sql`: Created matching PRD §4 data model exactly (idempotent, single table `opportunities`, `INT UNSIGNED` for `id` and `available_positions`, `status` ENUM).
+- `database/schema.sql`: Created matching PRD §4 data model exactly. Host MySQL service pending human execution.
 
 ### Backend Layer
-- `backend/package.json`: Configured with express@5, mysql2, dotenv, cors, zod; scripts `dev` and `start`.
-- `backend/.env.example`: Committed template with placeholder DB credentials and `FRONTEND_ORIGIN`.
+- `backend/package.json`: Configured with dependencies; scripts `dev` and `start`.
+- `backend/.env.example`: Committed template.
 - `backend/src/config/env.js`: Environment configuration loader.
-- `backend/src/config/db.js`: `mysql2/promise` connection pool with `dateStrings: true`, `waitForConnections: true`, `connectionLimit: 10`.
-- `backend/src/app.js`: Express app configured with `express.json({ limit: "100kb" })`, CORS restricted to `FRONTEND_ORIGIN`, and `/api/health` route.
-- `backend/src/server.js`: Server entrypoint listening on PORT (4000).
-- `backend/src/repositories/opportunity.repository.js`: Fully implemented CRUD repository with parameterized SQL statements (`pool.execute` with `?` placeholders) and strict column whitelist for dynamic updates. Zero string concatenation.
-- Evidence: `node --check` passed with 0 errors; ESM dynamic import verified exports `[create, getAll, getById, update, remove]`.
+- `backend/src/config/db.js`: `mysql2/promise` connection pool.
+- `backend/src/repositories/opportunity.repository.js`: CRUD queries using parameterized SQL.
+- `backend/src/controllers/opportunity.controller.js`: Handlers for `create` and `getAll` using PRD §5 envelope. No try/catch blocks used.
+- `backend/src/routes/opportunity.routes.js`: Router mapping `POST /` and `GET /`.
+- `backend/src/app.js`: Mounted `opportunityRoutes` at `/api/opportunities`.
+- Evidence: Server routes verified. Handlers properly invoke repository methods; rejected DB connection is forwarded to Express 5 error handling.
