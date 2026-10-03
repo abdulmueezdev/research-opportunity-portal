@@ -43,12 +43,15 @@
 - **P5-C2:** Modal organisms — OpportunityDetailModal, OpportunityFormModal, DeleteConfirmModal (native `<dialog>`). Commit: `eab7b9d`.
 - **P5-C3:** Layout organisms — MarqueeBanner, NavBar, Hero, LoadingSkeleton, EmptyState, ErrorState, ToastContainer. Commit: `9300fca`.
 - **P5-E:** App.tsx assembled — full state wiring, all modal handlers, search, filter, CRUD mutations. Build: `tsc -b && vite build` ✓ (45 modules, 306ms). Commit: `627b77b`.
-- **PHASE 5 COMPLETE. Frontend 100% done.**
+- **P5-VERIFY:** Live DOM verified via Reticle MCP — confirmed real DB records rendered, detail modal opens with live data, zero console errors, and local CORS fix. Commit: `a4ee708`.
+- **P6-A (Lint & Bug Hunt):** Code quality audit — 0 warnings, 0 errors in oxlint & tsc across frontend & backend. Cleaned unused middleware arguments. Commit: `4256679`.
+- **P6-B (A11y & SEO):** WCAG AA accessibility audit — SEO/OpenGraph meta tags in index.html, explicit aria-labels on all interactive triggers, programmatic label associations, visible Voltage Violet focus rings. Commit: `d83a08e`.
+- **P6-C (Documentation):** Comprehensive assignment submission README.md covering architecture, schema, run instructions, Bruno collection testing, limitations, and placeholders. Commit: `154d525`.
+- **PHASE 6 COMPLETE. All audits, polish, and documentation 100% verified.**
 
 ## 4. Immediate Next Steps
-- **GATE: CTO Review** — Live demo of the app before proceeding.
-- **P6:** Final Code Review, A11y Audit & Polish.
-- **P7:** Video Walkthrough & ZIP Submission.
+- **GATE: CTO Review** — Final review of codebase and documentation.
+- **P7:** Video Walkthrough & ZIP Submission (`P24_XXXX_NAME_CLASS.zip`).
 
 ## 5. Hard Constraints (Never Violate)
 - Assignment PDF > PRD.md > DESIGN.md > AI_CONSTRAINTS.md.
