@@ -8,7 +8,10 @@ import { errorHandler } from './middleware/errorHandler.js';
 const app = express();
 
 app.use(cors({
-  origin: env.FRONTEND_ORIGIN,
+  origin: (origin, cb) => {
+    if (!origin || /^http:\/\/localhost(:\d+)?$/.test(origin)) return cb(null, true);
+    cb(null, origin === env.FRONTEND_ORIGIN);
+  },
   credentials: true,
 }));
 
