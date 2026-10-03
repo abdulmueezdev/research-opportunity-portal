@@ -105,11 +105,45 @@ export async function update(req, res) {
   });
 }
 
+/**
+ * Deletes an opportunity by ID.
+ */
+export async function remove(req, res) {
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id) || id <= 0) {
+    return res.status(400).json({
+      success: false,
+      error: {
+        code: 'VALIDATION_ERROR',
+        message: 'Invalid ID format',
+      },
+    });
+  }
+
+  const affectedRows = await opportunityRepository.deleteById(id);
+  if (affectedRows === 0) {
+    return res.status(404).json({
+      success: false,
+      error: {
+        code: 'NOT_FOUND',
+        message: 'Opportunity not found',
+      },
+    });
+  }
+
+  res.status(200).json({
+    success: true,
+    data: { id },
+    message: 'Opportunity deleted',
+  });
+}
+
 export const opportunityController = {
   create,
   getAll,
   getById,
   update,
+  remove,
 };
 
 export default opportunityController;

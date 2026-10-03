@@ -7,5 +7,6 @@ opportunityRoutes.post('/', opportunityController.create);
 opportunityRoutes.get('/', opportunityController.getAll);
 opportunityRoutes.get('/:id', opportunityController.getById);
 opportunityRoutes.put('/:id', opportunityController.update);
+opportunityRoutes.delete('/:id', opportunityController.remove);
 
 export default opportunityRoutes;

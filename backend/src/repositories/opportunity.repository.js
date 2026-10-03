@@ -98,12 +98,19 @@ export async function update(id, data) {
 /**
  * Deletes an opportunity by ID.
  * @param {number|string} id
- * @returns {Promise<boolean>} True if a row was deleted, false otherwise
+ * @returns {Promise<number>} Number of affected rows
  */
-export async function remove(id) {
+export async function deleteById(id) {
   const sql = 'DELETE FROM opportunities WHERE id = ?';
   const [result] = await pool.execute(sql, [id]);
-  return result.affectedRows > 0;
+  return result.affectedRows;
+}
+
+/**
+ * Legacy alias for deleteById.
+ */
+export async function remove(id) {
+  return deleteById(id);
 }
 
 export const opportunityRepository = {
@@ -111,7 +118,8 @@ export const opportunityRepository = {
   getAll,
   getById,
   update,
-  remove,
+  deleteById,
+  remove: deleteById,
 };
 
 export default opportunityRepository;
