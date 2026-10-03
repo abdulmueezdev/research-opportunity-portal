@@ -47,11 +47,13 @@
 - **P6-A (Lint & Bug Hunt):** Code quality audit — 0 warnings, 0 errors in oxlint & tsc across frontend & backend. Cleaned unused middleware arguments. Commit: `4256679`.
 - **P6-B (A11y & SEO):** WCAG AA accessibility audit — SEO/OpenGraph meta tags in index.html, explicit aria-labels on all interactive triggers, programmatic label associations, visible Voltage Violet focus rings. Commit: `d83a08e`.
 - **P6-C (Documentation):** Comprehensive assignment submission README.md covering architecture, schema, run instructions, Bruno collection testing, limitations, and placeholders. Commit: `154d525`.
-- **PHASE 6 COMPLETE. All audits, polish, and documentation 100% verified.**
+- **P7 (Repository Sanitization & Checklist):** Git repository sanitized (zero secrets, zero build artifacts in git). SUBMISSION_CHECKLIST.md created with detailed video, repo, and packaging steps. Commit: `56ff110`.
+- **ALL AI CODING & PREPARATION PHASES COMPLETE (P0 THROUGH P7).**
 
-## 4. Immediate Next Steps
-- **GATE: CTO Review** — Final review of codebase and documentation.
-- **P7:** Video Walkthrough & ZIP Submission (`P24_XXXX_NAME_CLASS.zip`).
+## 4. Immediate Next Steps (Human Student Execution)
+- **Video Recording:** Record <= 60 second walkthrough showing servers running, CRUD operations, validation errors, and Bruno API collection.
+- **GitHub Repository:** Push repository to public GitHub and update link in README.md.
+- **ZIP Archive:** Package clean repository (excluding node_modules/ and .env) as `P24_XXXX_NAME_CLASS.zip` for final LMS submission.
 
 ## 5. Hard Constraints (Never Violate)
 - Assignment PDF > PRD.md > DESIGN.md > AI_CONSTRAINTS.md.
