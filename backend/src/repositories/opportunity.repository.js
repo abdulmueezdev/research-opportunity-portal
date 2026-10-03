@@ -46,7 +46,7 @@ export async function create(data) {
  * @returns {Promise<Array<Object>>}
  */
 export async function getAll() {
-  const sql = 'SELECT * FROM opportunities ORDER BY created_at DESC';
+  const sql = 'SELECT * FROM opportunities ORDER BY id DESC';
   const [rows] = await pool.execute(sql);
   return rows;
 }

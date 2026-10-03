@@ -12,7 +12,6 @@ app.use(cors({
     if (!origin || /^http:\/\/localhost(:\d+)?$/.test(origin)) return cb(null, true);
     cb(null, origin === env.FRONTEND_ORIGIN);
   },
-  credentials: true,
 }));
 
 app.use(express.json({ limit: '100kb' }));
