@@ -188,8 +188,8 @@ export function OpportunityCard({
             onClick={() => handleClose(opportunity.id)}
             aria-label={`Close listing for ${opportunity.title}`}
             className={cn(
-              'inline-flex items-center justify-center rounded-full border border-carbon bg-mint-pop px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-carbon',
-              'hover:brightness-95 active:translate-y-px transition-all cursor-pointer',
+              'inline-flex items-center justify-center rounded-full border border-carbon bg-paper px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-carbon',
+              'hover:bg-soft-mist active:translate-y-px transition-colors cursor-pointer',
               'focus-visible:outline-2 focus-visible:outline-voltage-violet focus-visible:outline-offset-2'
             )}
           >

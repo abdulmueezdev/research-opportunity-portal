@@ -54,6 +54,10 @@
   - Predefined Department dropdown (`<select>` with 6 core academic options) and Required Skills `<datalist>` added to `OpportunityFormModal.tsx`.
   - Pastel action button fills applied to `OpportunityCard.tsx` footer: Lavender (`#e9ccff` View), Sky Wash (`#dceeff` Edit), Mint Pop (`#55db9c` Close), Ember (`#fb4903` Delete with white text/icon).
   - Verified with `npm run build` (zero TS errors, 542ms) and live Reticle MCP DOM inspection.
+- **P8 (TASK-FIX-02 - Isolated Close Button Adjustment):**
+  - Reverted only the "Close" button in `OpportunityCard.tsx` to the neutral outlined pill style (`bg-paper hover:bg-soft-mist text-carbon border border-carbon`).
+  - Strictly preserved pastel fills for View Details (`bg-lavender`), Edit (`bg-sky-wash`), and Delete (`bg-ember`).
+  - Verified with `npm run build` (zero TS/lint errors, 263ms).
 
 ## 4. Immediate Next Steps (Human Student Execution)
 - **Video Recording:** Record <= 60 second walkthrough showing servers running, CRUD operations, validation errors, and Bruno API collection.
