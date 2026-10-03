@@ -1,0 +1,77 @@
+01-post-create-1 (201 Created) - 41 ms
+Assertions
+   ✓ res.status: eq 201
+   ✓ res.body.success: eq true
+   ✓ res.body.data.id: isDefined
+   ✓ res.body.data.status: eq Open
+02-post-create-2 (201 Created) - 7 ms
+Assertions
+   ✓ res.status: eq 201
+   ✓ res.body.success: eq true
+   ✓ res.body.data.id: isDefined
+03-post-create-3 (201 Created) - 7 ms
+Assertions
+   ✓ res.status: eq 201
+   ✓ res.body.success: eq true
+   ✓ res.body.data.id: isDefined
+04-get-all (200 OK) - 4 ms
+Assertions
+   ✓ res.status: eq 200
+   ✓ res.body.success: eq true
+   ✓ res.body.data: isDefined
+05-get-by-id1 (200 OK) - 4 ms
+Assertions
+   ✓ res.status: eq 200
+   ✓ res.body.success: eq true
+   ✓ res.body.data.id: eq {{id1}}
+06-put-update-id1 (200 OK) - 7 ms
+Assertions
+   ✓ res.status: eq 200
+   ✓ res.body.success: eq true
+   ✓ res.body.data.title: eq Advanced Autonomous Drone Navigation
+   ✓ res.body.data.available_positions: eq 4
+07-put-close-id1 (200 OK) - 8 ms
+Assertions
+   ✓ res.status: eq 200
+   ✓ res.body.success: eq true
+   ✓ res.body.data.status: eq Closed
+08-delete-id3 (200 OK) - 5 ms
+Assertions
+   ✓ res.status: eq 200
+   ✓ res.body.success: eq true
+09-get-id3-again (404 Not Found) - 5 ms
+Assertions
+   ✓ res.status: eq 404
+   ✓ res.body.success: eq false
+   ✓ res.body.error.code: eq NOT_FOUND
+10-post-missing-title-invalid-positions (400 Bad Request) - 4 ms
+Assertions
+   ✓ res.status: eq 400
+   ✓ res.body.success: eq false
+   ✓ res.body.error.code: eq VALIDATION_ERROR
+   ✓ res.body.error.details: isDefined
+11-extra-get-abc-400 (400 Bad Request) - 3 ms
+Assertions
+   ✓ res.status: eq 400
+   ✓ res.body.success: eq false
+   ✓ res.body.error.code: eq VALIDATION_ERROR
+12-extra-get-999-404 (404 Not Found) - 3 ms
+Assertions
+   ✓ res.status: eq 404
+   ✓ res.body.success: eq false
+   ✓ res.body.error.code: eq NOT_FOUND
+
+📊 Execution Summary
+┌───────────────┬────────────────┐
+│ Metric        │     Result     │
+├───────────────┼────────────────┤
+│ Status        │     ✓ PASS     │
+├───────────────┼────────────────┤
+│ Requests      │ 12 (12 Passed) │
+├───────────────┼────────────────┤
+│ Tests         │      0/0       │
+├───────────────┼────────────────┤
+│ Assertions    │     38/38      │
+├───────────────┼────────────────┤
+│ Duration (ms) │      1328      │
+└───────────────┴────────────────┘
