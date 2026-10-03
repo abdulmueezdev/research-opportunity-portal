@@ -399,19 +399,44 @@ export function OpportunityFormModal({
                 Department
                 <span className="inline-block size-1.5 rounded-full bg-ember ml-1" aria-hidden="true" />
               </label>
-              <Input
+              <select
                 id="form-department"
                 name="department"
-                type="text"
                 required
                 aria-required="true"
-                placeholder="e.g. Computer Science"
                 value={formData.department}
                 onChange={(e) => setFormData((prev) => ({ ...prev, department: e.target.value }))}
-                isInvalid={Boolean(getFieldError('department'))}
+                aria-invalid={Boolean(getFieldError('department')) ? 'true' : undefined}
                 aria-describedby={getFieldError('department') ? 'form-department-error' : undefined}
                 disabled={isSubmitting}
-              />
+                className={cn(
+                  'w-full min-h-11 px-4 py-2.5 rounded-2xl bg-paper text-carbon text-sm font-medium',
+                  'transition-colors cursor-pointer appearance-none bg-[url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3e%3cpolyline points=\'6 9 12 15 18 9\'%3e%3c/polyline%3e%3c/svg%3e")] bg-[length:1em_1em] bg-[right_1rem_center] bg-no-repeat pr-10',
+                  getFieldError('department')
+                    ? 'border-2 border-ember focus:outline-2 focus:outline-ember focus:outline-offset-2'
+                    : 'border border-carbon focus:outline-2 focus:outline-voltage-violet focus:outline-offset-2',
+                  'disabled:bg-soft-mist disabled:cursor-not-allowed disabled:opacity-70'
+                )}
+              >
+                <option value="" disabled>Select department...</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Software Engineering">Software Engineering</option>
+                <option value="Cyber Security">Cyber Security</option>
+                <option value="Physics">Physics</option>
+                <option value="Electrical Engineering">Electrical Engineering</option>
+                <option value="Mathematics">Mathematics</option>
+                {formData.department && ![
+                  'Computer Science',
+                  'Software Engineering',
+                  'Cyber Security',
+                  'Physics',
+                  'Electrical Engineering',
+                  'Mathematics',
+                  ''
+                ].includes(formData.department) && (
+                  <option value={formData.department}>{formData.department}</option>
+                )}
+              </select>
               {getFieldError('department') && (
                 <p
                   id="form-department-error"
@@ -437,9 +462,10 @@ export function OpportunityFormModal({
                 id="form-required_skills"
                 name="required_skills"
                 type="text"
+                list="skills-list"
                 required
                 aria-required="true"
-                placeholder="e.g. Go, Raft, Docker, Linux"
+                placeholder="e.g. Python, React, MySQL"
                 value={formData.required_skills}
                 onChange={(e) => setFormData((prev) => ({ ...prev, required_skills: e.target.value }))}
                 isInvalid={Boolean(getFieldError('required_skills'))}
@@ -450,6 +476,16 @@ export function OpportunityFormModal({
                 }
                 disabled={isSubmitting}
               />
+              <datalist id="skills-list">
+                <option value="C++" />
+                <option value="Java" />
+                <option value="MySQL" />
+                <option value="Python" />
+                <option value="React" />
+                <option value="Node.js" />
+                <option value="Data Structures" />
+                <option value="Machine Learning" />
+              </datalist>
               <p id="form-required_skills-helper" className="text-[11px] text-carbon/70">
                 Comma-separated (e.g. Python, PyTorch, C++)
               </p>

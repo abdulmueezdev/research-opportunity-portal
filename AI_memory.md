@@ -48,7 +48,12 @@
 - **P6-B (A11y & SEO):** WCAG AA accessibility audit — SEO/OpenGraph meta tags in index.html, explicit aria-labels on all interactive triggers, programmatic label associations, visible Voltage Violet focus rings. Commit: `d83a08e`.
 - **P6-C (Documentation):** Comprehensive assignment submission README.md covering architecture, schema, run instructions, Bruno collection testing, limitations, and placeholders. Commit: `154d525`.
 - **P7 (Repository Sanitization & Checklist):** Git repository sanitized (zero secrets, zero build artifacts in git). SUBMISSION_CHECKLIST.md created with detailed video, repo, and packaging steps. Commit: `56ff110`.
-- **ALL AI CODING & PREPARATION PHASES COMPLETE (P0 THROUGH P7).**
+- **P8 (TASK-FIX-01 - Post-Review UI Fixes & Enhancements):**
+  - Search bar duplicate native cancel button removed via CSS `-webkit-appearance: none; appearance: none;`.
+  - Full-bleed Concrete Gray footer added to `App.tsx` with student assignment credit and GitHub repository pill link.
+  - Predefined Department dropdown (`<select>` with 6 core academic options) and Required Skills `<datalist>` added to `OpportunityFormModal.tsx`.
+  - Pastel action button fills applied to `OpportunityCard.tsx` footer: Lavender (`#e9ccff` View), Sky Wash (`#dceeff` Edit), Mint Pop (`#55db9c` Close), Ember (`#fb4903` Delete with white text/icon).
+  - Verified with `npm run build` (zero TS errors, 542ms) and live Reticle MCP DOM inspection.
 
 ## 4. Immediate Next Steps (Human Student Execution)
 - **Video Recording:** Record <= 60 second walkthrough showing servers running, CRUD operations, validation errors, and Bruno API collection.
