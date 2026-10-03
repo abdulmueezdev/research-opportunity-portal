@@ -36,13 +36,19 @@
 - **P4-S2:** Stitch S1 Home screen generated.
 - **P4-S3:** All 9 Stitch screens generated: S1-S9.
 - **P4-S4 (Design Review Complete):** P4-S4-A, P4-S4-B, P4-S4-C completed.
-- **P5-A:** Frontend Scaffold & Theme configuration (in-progress/completed).
-- **P5-B:** UI Atoms build with strict token compliance (in-progress/completed).
-- **P5-D:** API Client & React state hooks (in-progress/completed).
+- **P5-A:** Frontend Scaffold & Theme — Vite React TS, Tailwind v4, fonts, theme.css. Commit: `65f4747`.
+- **P5-B:** UI Atoms — PrimaryButton, OutlinedButton, StatusBadge, SkillChip, Input, Textarea, Sticker, index.ts. Commit: `c18591d`.
+- **P5-D:** API Client (`api/opportunities.ts`) + `useOpportunities` + `useToast` hooks. Commit: `bc13bd5`.
+- **P5-C1:** Card/Grid organisms — FilterPills, StatPills, OpportunityCard (`<article aria-labelledby>`), OpportunityGrid. Commit: `183f890`.
+- **P5-C2:** Modal organisms — OpportunityDetailModal, OpportunityFormModal, DeleteConfirmModal (native `<dialog>`). Commit: `eab7b9d`.
+- **P5-C3:** Layout organisms — MarqueeBanner, NavBar, Hero, LoadingSkeleton, EmptyState, ErrorState, ToastContainer. Commit: `9300fca`.
+- **P5-E:** App.tsx assembled — full state wiring, all modal handlers, search, filter, CRUD mutations. Build: `tsc -b && vite build` ✓ (45 modules, 306ms). Commit: `627b77b`.
+- **PHASE 5 COMPLETE. Frontend 100% done.**
 
 ## 4. Immediate Next Steps
-- **P5-C:** Build Molecules and Organisms (OpportunityCard, Grid, Modals, Empty/Error states).
-- **P5-E:** Wire full UI with live backend API and test end-to-end.
+- **GATE: CTO Review** — Live demo of the app before proceeding.
+- **P6:** Final Code Review, A11y Audit & Polish.
+- **P7:** Video Walkthrough & ZIP Submission.
 
 ## 5. Hard Constraints (Never Violate)
 - Assignment PDF > PRD.md > DESIGN.md > AI_CONSTRAINTS.md.
