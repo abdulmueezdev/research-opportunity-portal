@@ -68,6 +68,7 @@ export function OpportunityCard({
   className,
 }: OpportunityCardProps) {
   const handleClose = onCloseListing ?? onCloseOpportunity;
+  const isClosed = opportunity.status === 'Closed';
   const headerWash = getHeaderWashClass(opportunity.id, opportunity.status);
 
   const skills = opportunity.required_skills
@@ -154,14 +155,15 @@ export function OpportunityCard({
         )}
       </div>
 
-      {/* Card Footer: Pastel Action Buttons */}
+      {/* Card Footer: Action Buttons */}
       <footer className="flex flex-wrap items-center gap-2 border-t border-carbon px-5 py-3 mt-auto bg-paper">
         <button
           type="button"
           onClick={() => onView(opportunity.id)}
           aria-label={`View Details for ${opportunity.title}`}
           className={cn(
-            'inline-flex items-center justify-center rounded-full border border-carbon bg-lavender px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-carbon',
+            'inline-flex items-center justify-center rounded-full border border-carbon px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-carbon',
+            isClosed ? 'bg-white' : 'bg-lavender',
             'hover:brightness-95 active:translate-y-px transition-all cursor-pointer',
             'focus-visible:outline-2 focus-visible:outline-voltage-violet focus-visible:outline-offset-2'
           )}
@@ -174,7 +176,8 @@ export function OpportunityCard({
           onClick={() => onEdit(opportunity)}
           aria-label={`Edit ${opportunity.title}`}
           className={cn(
-            'inline-flex items-center justify-center rounded-full border border-carbon bg-sky-wash px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-carbon',
+            'inline-flex items-center justify-center rounded-full border border-carbon px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-carbon',
+            isClosed ? 'bg-white' : 'bg-sky-wash',
             'hover:brightness-95 active:translate-y-px transition-all cursor-pointer',
             'focus-visible:outline-2 focus-visible:outline-voltage-violet focus-visible:outline-offset-2'
           )}
@@ -202,12 +205,18 @@ export function OpportunityCard({
           onClick={() => onDelete(opportunity)}
           aria-label={`Delete ${opportunity.title}`}
           className={cn(
-            'inline-flex items-center justify-center gap-1 rounded-full border border-carbon bg-ember px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-white',
-            'hover:brightness-95 active:translate-y-px transition-all cursor-pointer ml-auto',
+            'inline-flex items-center justify-center gap-1 rounded-full border border-carbon px-3 py-1.5 text-xs font-bold uppercase tracking-wider ml-auto',
+            isClosed ? 'bg-white text-carbon' : 'bg-ember text-white',
+            'hover:brightness-95 active:translate-y-px transition-all cursor-pointer',
             'focus-visible:outline-2 focus-visible:outline-voltage-violet focus-visible:outline-offset-2'
           )}
         >
-          <Sticker name="trash" size={13} className="text-white shrink-0" aria-hidden={true} />
+          <Sticker
+            name="trash"
+            size={13}
+            className={cn('shrink-0', isClosed ? 'text-carbon' : 'text-white')}
+            aria-hidden={true}
+          />
           <span>Delete</span>
         </button>
       </footer>
