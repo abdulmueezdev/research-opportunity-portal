@@ -13,48 +13,60 @@ The **University Research Opportunity Portal** is a full-stack, responsive web a
 
 The application follows a clean 3-tier architecture:
 1. **Presentation Tier (Client):** Single Page Application (SPA) built with React 19, TypeScript, and Tailwind CSS v4 using the Slush flat-pastel design system.
-2. **Application Tier (API):** Stateless REST API powered by Express 5 on Node.js 20 (ES Modules) enforcing strict Zod validation, parameter sanitization, and uniform JSON response envelopes.
-3. **Data Tier (Persistence):** Relational storage via MySQL 8.4 utilizing InnoDB, connection pooling via `mysql2/promise`, parameterized queries, and strict column typing.
+2. **Application Tier (API):** Stateless REST API powered by Express 5 on Node.js 20 (ES Modules) enforcing strict Zod validation, parameter sanitization, global error handling middleware, and uniform JSON response envelopes.
+3. **Data Tier (Persistence):** Relational storage via MySQL 8.4 utilizing InnoDB, connection pooling via `mysql2/promise`, parameterized queries (`pool.execute`), and strict column typing.
 
 ```mermaid
-flowchart LR
+flowchart TD
     subgraph ClientTier ["1. Presentation Tier (Client)"]
         Browser["Web Browser (Faculty & Students)"]
         SPA["React 19 SPA (Vite + TS + Tailwind v4)\nPort: 5173"]
     end
 
-    subgraph ApiTier ["2. Application Tier (Express API)"]
-        ExpressApp["Express 5 REST API (Node 20 ESM)\nPort: 4000"]
-        ZodValidator["Zod Schema Validator\n(createSchema / updateSchema)"]
-        Controller["Opportunity Controller\n(HTTP Status & Envelope Mapping)"]
-        Repository["Opportunity Repository\n(ALLOWED_COLUMNS Whitelist)"]
+    subgraph ApiTier ["2. Application Tier (Express API - Port: 4000)"]
+        CORS["CORS Middleware\n(origin: FRONTEND_ORIGIN / localhost)"]
+        BodyParser["express.json({ limit: '100kb' })"]
+        ZodValidator["validate(schema)\n(createSchema / updateSchema)"]
+        Router["opportunity.routes.js\n(/api/opportunities)"]
+        Controller["opportunity.controller.js\n(HTTP Status & Envelope Mapping)"]
+        Repository["opportunity.repository.js\n(ALLOWED_COLUMNS Whitelist)"]
+        NotFoundHandler["notFound Middleware\n(404 NOT_FOUND Route Handler)"]
+        ErrorHandler["errorHandler Middleware\n(Global Error Handler & 500 Masking)"]
     end
 
     subgraph DataTier ["3. Data Tier (Database)"]
         MySQLPool["mysql2 Connection Pool\n(dateStrings: true, limit: 10)"]
-        MySQLDB[("MySQL 8.4 Database\nportal_db:3306\n(opportunities table)")]
+        MySQLDB[("MySQL 8.4 Database\nresearch_portal:3306\n(opportunities table)")]
     end
 
     Browser -->|User Actions & Events| SPA
-    SPA -->|HTTP REST JSON API| ExpressApp
-    ExpressApp -->|Validate Payloads| ZodValidator
-    ZodValidator -->|Sanitized DTO| Controller
-    ExpressApp -->|Route Dispatch| Controller
-    Controller -->|Domain Operations| Repository
-    Repository -->|Parameterized SQL| MySQLPool
-    MySQLPool -->|InnoDB Execution| MySQLDB
-    MySQLDB -.->|Result Sets| MySQLPool
-    MySQLPool -.->|Raw Rows| Repository
+    SPA -->|HTTP REST JSON Requests| CORS
+    CORS --> BodyParser
+    BodyParser -->|Malformed JSON Syntax| ErrorHandler
+    BodyParser -->|Valid JSON| Router
+    Router -->|Unmatched Route| NotFoundHandler
+    NotFoundHandler -->|404 NOT_FOUND Envelope| SPA
+    Router -->|POST / PUT| ZodValidator
+    ZodValidator -->|Schema Mismatch| ErrorHandler
+    ZodValidator -->|Sanitized Payload| Controller
+    Router -->|GET / DELETE| Controller
+    Controller -->|Domain Query/Mutation| Repository
+    Repository -->|pool.execute(sql, params)| MySQLPool
+    MySQLPool -->|InnoDB Query Execution| MySQLDB
+    MySQLDB -.->|Result Sets / OkPacket| MySQLPool
+    MySQLPool -.->|Row Arrays / affectedRows| Repository
     Repository -.->|Entity Objects| Controller
-    Controller -.->|Envelope { success, data }| ExpressApp
-    ExpressApp -.->|JSON Response (200 / 201)| SPA
-    SPA -.->|DOM Re-render| Browser
+    Controller -.->|200 / 201 Success Envelope| SPA
+    ErrorHandler -.->|400 / 404 / 500 Error Envelope| SPA
+    SPA -.->|DOM Re-render & Toast Feedback| Browser
 
     classDef client fill:#dceeff,stroke:#000000,stroke-width:1.5px,color:#000000;
     classDef api fill:#e9ccff,stroke:#000000,stroke-width:1.5px,color:#000000;
+    classDef err fill:#ffcfcf,stroke:#000000,stroke-width:1.5px,color:#000000;
     classDef db fill:#55db9c,stroke:#000000,stroke-width:1.5px,color:#000000;
     class Browser,SPA client;
-    class ExpressApp,ZodValidator,Controller,Repository api;
+    class CORS,BodyParser,ZodValidator,Router,Controller,Repository api;
+    class NotFoundHandler,ErrorHandler err;
     class MySQLPool,MySQLDB db;
 ```
 
@@ -62,7 +74,7 @@ flowchart LR
 
 ## 2. Archify Visual Model Specification
 
-The architecture was analyzed and rendered using the **Archify** visual modeling engine (`archify 3.0.1`). The verified topology specification captures the component network, security boundaries, and data tiers:
+The architecture was analyzed and rendered using the **Archify** visual modeling engine (`archify 3.0.1`). The verified topology specification captures the component network, security boundaries, error handlers, and data tiers:
 
 ```json
 {
@@ -78,27 +90,31 @@ The architecture was analyzed and rendered using the **Archify** visual modeling
     { "id": "react_ui", "type": "backend", "label": "React 19 App", "sublabel": "Vite + Tailwind :5173", "pos": [280, 260], "size": [150, 60] },
     { "id": "api_gateway", "type": "backend", "label": "Express 5 App", "sublabel": "CORS + JSON :4000", "pos": [520, 260], "size": [150, 60] },
     { "id": "zod_validator", "type": "security", "label": "Zod Schema", "sublabel": "POST / PUT validation", "pos": [520, 110], "size": [150, 60] },
+    { "id": "not_found", "type": "middleware", "label": "notFound MW", "sublabel": "404 catch-all", "pos": [520, 410], "size": [150, 60] },
+    { "id": "error_handler", "type": "middleware", "label": "errorHandler MW", "sublabel": "400/500 JSON envelope", "pos": [760, 410], "size": [160, 60] },
     { "id": "controller", "type": "backend", "label": "Controller", "sublabel": "opportunity.controller", "pos": [760, 260], "size": [150, 60] },
     { "id": "repository", "type": "backend", "label": "Repository", "sublabel": "ALLOWED_COLUMNS whitelist", "pos": [1000, 260], "size": [160, 60] },
-    { "id": "db", "type": "database", "label": "MySQL 8.4", "sublabel": "portal_db:3306", "pos": [1260, 260], "size": [140, 60] }
+    { "id": "db", "type": "database", "label": "MySQL 8.4", "sublabel": "research_portal:3306", "pos": [1260, 260], "size": [140, 60] }
   ],
   "boundaries": [
     { "kind": "region", "label": "Client Tier", "wraps": ["client", "react_ui"] },
-    { "kind": "security-group", "label": "Node.js Express Backend", "wraps": ["api_gateway", "zod_validator", "controller", "repository"] },
+    { "kind": "security-group", "label": "Node.js Express Backend", "wraps": ["api_gateway", "zod_validator", "not_found", "error_handler", "controller", "repository"] },
     { "kind": "region", "label": "Database Tier", "wraps": ["db"] }
   ],
   "connections": [
     { "id": "c1", "from": "client", "to": "react_ui", "label": "UI Events", "labelDy": -20 },
     { "id": "c2", "from": "react_ui", "to": "api_gateway", "label": "REST API", "variant": "emphasis", "labelDy": -20 },
     { "id": "c3", "from": "api_gateway", "to": "zod_validator", "label": "validate", "fromSide": "top", "toSide": "bottom", "labelDx": 35 },
-    { "id": "c4", "from": "api_gateway", "to": "controller", "label": "routes", "labelDy": -20 },
-    { "id": "c5", "from": "controller", "to": "repository", "label": "queries", "labelDy": -20 },
-    { "id": "c6", "from": "repository", "to": "db", "label": "SQL", "variant": "emphasis", "labelDy": -20 }
+    { "id": "c4", "from": "api_gateway", "to": "not_found", "label": "unmatched 404", "fromSide": "bottom", "toSide": "top" },
+    { "id": "c5", "from": "api_gateway", "to": "controller", "label": "routes", "labelDy": -20 },
+    { "id": "c6", "from": "controller", "to": "repository", "label": "queries", "labelDy": -20 },
+    { "id": "c7", "from": "controller", "to": "error_handler", "label": "error bubble", "fromSide": "bottom", "toSide": "top" },
+    { "id": "c8", "from": "repository", "to": "db", "label": "SQL pool.execute", "variant": "emphasis", "labelDy": -20 }
   ],
   "cards": [
     { "dot": "cyan", "title": "Client Tier", "items": ["React 19 Single Page App", "Tailwind CSS v4 token system", "Native HTML5 <dialog> modals"] },
-    { "dot": "emerald", "title": "Backend Tier", "items": ["Express 5 without redundant service layer", "Strict Zod schemas on write endpoints", "mysql2 connection pool with parameterized SQL"] },
-    { "dot": "rose", "title": "Database Tier", "items": ["MySQL 8.4 with UTF8MB4 charset", "Auto-increment unsigned primary keys", "Timestamp management for audit trail"] }
+    { "dot": "emerald", "title": "Backend Tier", "items": ["Express 5 without redundant service layer", "Strict Zod schemas on write endpoints", "mysql2 connection pool with parameterized SQL", "Centralized notFound and errorHandler middleware"] },
+    { "dot": "rose", "title": "Database Tier", "items": ["MySQL 8.4 with UTF8MB4 charset", "Database name: research_portal", "Auto-increment unsigned primary keys", "Timestamp management for audit trail"] }
   ]
 }
 ```
@@ -118,11 +134,11 @@ C4Context
     Person(faculty, "Faculty Member / PI", "Publishes new research projects, updates requirements, and marks positions as Closed.")
     
     System(portal, "Research Opportunity Portal", "Full-stack web application providing real-time listing management, search, and details.")
-    SystemDb_Ext(mysql, "MySQL Database", "Persistent relational store for opportunities, requirements, deadlines, and statuses.")
+    SystemDb_Ext(mysql, "MySQL Database", "Persistent relational store (research_portal) for opportunities, requirements, deadlines, and statuses.")
 
     Rel(student, portal, "Searches & views research openings", "HTTPS")
     Rel(faculty, portal, "Posts, updates, closes & deletes openings", "HTTPS")
-    Rel(portal, mysql, "Executes parameterized SQL queries", "TCP 3306")
+    Rel(portal, mysql, "Executes parameterized SQL queries (pool.execute)", "TCP 3306")
 ```
 
 ### Level 2: Container Diagram
@@ -135,8 +151,8 @@ C4Container
     Person(user, "User (Faculty / Student)", "Interacts via standard web browser")
 
     Container(frontend, "Frontend SPA", "React 19, TypeScript, Vite, Tailwind v4", "Delivers responsive UI, client-side filtering, form modals, and validation feedback.")
-    Container(backend, "Backend API", "Node.js 20, Express 5, Zod", "Provides RESTful endpoints, payload validation, and database abstraction.")
-    ContainerDb(db, "Database", "MySQL 8.4", "Stores opportunities table with InnoDB ACID guarantees.")
+    Container(backend, "Backend API", "Node.js 20, Express 5, Zod", "Provides RESTful endpoints, payload validation, middleware error boundaries, and database abstraction.")
+    ContainerDb(db, "Database", "MySQL 8.4 (research_portal)", "Stores opportunities table with InnoDB ACID guarantees.")
 
     Rel(user, frontend, "Interacts via browser", "HTTPS / Localhost:5173")
     Rel(frontend, backend, "Makes API calls", "JSON / REST via HTTP :4000")
@@ -161,7 +177,7 @@ sequenceDiagram
     participant Val as validate(createSchema)
     participant Ctrl as opportunity.controller
     participant Repo as opportunity.repository
-    participant DB as MySQL Database (portal_db)
+    participant DB as MySQL Database (research_portal)
 
     Faculty->>Form: Enters form data & clicks "SAVE OPPORTUNITY"
     Form->>Hook: createItem(payload)
@@ -203,7 +219,7 @@ sequenceDiagram
     participant Route as Express Router
     participant Ctrl as opportunity.controller
     participant Repo as opportunity.repository
-    participant DB as MySQL Database
+    participant DB as MySQL Database (research_portal)
 
     Student->>UI: Navigates to portal URL
     UI->>Hook: Initializes hook on mount
@@ -212,7 +228,7 @@ sequenceDiagram
     API->>Route: GET /api/opportunities
     Route->>Ctrl: getAll(req, res)
     Ctrl->>Repo: getAll()
-    Repo->>DB: SELECT * FROM opportunities ORDER BY created_at DESC
+    Repo->>DB: SELECT * FROM opportunities ORDER BY id DESC
     DB-->>Repo: Array of rows
     Repo-->>Ctrl: records[]
     Ctrl-->>API: 200 OK { success: true, data: records[] }
@@ -242,7 +258,7 @@ sequenceDiagram
     participant Val as validate(updateSchema)
     participant Ctrl as opportunity.controller
     participant Repo as opportunity.repository
-    participant DB as MySQL Database
+    participant DB as MySQL Database (research_portal)
 
     Faculty->>Card: Clicks "Close" button
     Card->>Hook: closeOpportunity(id)
@@ -278,7 +294,7 @@ sequenceDiagram
     participant Route as Express Router
     participant Ctrl as opportunity.controller
     participant Repo as opportunity.repository
-    participant DB as MySQL Database
+    participant DB as MySQL Database (research_portal)
 
     Faculty->>Card: Clicks "Delete" button
     Card->>Modal: Opens native <dialog> with opportunity details
@@ -299,6 +315,50 @@ sequenceDiagram
     Hook-->>Modal: Resolves promise
     Modal->>Modal: Closes dialog
     Hook-->>Faculty: Displays success toast: "Opportunity deleted successfully"
+```
+
+### E. Error Handling & Middleware Pipeline Flow (400, 404, 500)
+Illustrates how the centralized Express middleware pipeline intercepts client mistakes, missing routes, and server exceptions to return standardized JSON error envelopes without leaking sensitive data.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Client as API Client / Frontend
+    participant App as Express Pipeline
+    participant Parser as express.json()
+    participant Route as Routes (/api/opportunities)
+    participant Val as validate.js (Zod)
+    participant Ctrl as Controller
+    participant NF as notFound.js
+    participant EH as errorHandler.js
+
+    Note over Client, App: Case 1: Malformed JSON Syntax (400)
+    Client->>App: POST /api/opportunities with malformed JSON {"title":
+    App->>Parser: Parse body
+    Parser-->>EH: SyntaxError (entity.parse.failed)
+    EH-->>Client: 400 Bad Request { success: false, error: { code: 'INVALID_JSON', message: 'Invalid JSON payload' } }
+
+    Note over Client, App: Case 2: Validation Failure (400)
+    Client->>App: POST /api/opportunities { title: "   ", positions: -1 }
+    App->>Val: Schema SafeParse
+    Val-->>Client: 400 Bad Request { success: false, error: { code: 'VALIDATION_ERROR', details: [...] } }
+
+    Note over Client, App: Case 3: Invalid URL or Route Not Found (404)
+    Client->>App: GET /api/nonexistent
+    App->>Route: Match route (No match)
+    App->>NF: Forward to notFound middleware
+    NF-->>Client: 404 Not Found { success: false, error: { code: 'NOT_FOUND', message: 'Route not found' } }
+
+    Note over Client, App: Case 4: Entity Not Found (404)
+    Client->>App: GET /api/opportunities/999999
+    App->>Ctrl: getById(999999)
+    Ctrl-->>Client: 404 Not Found { success: false, error: { code: 'NOT_FOUND', message: 'Opportunity not found' } }
+
+    Note over Client, App: Case 5: Unexpected Server Exception (500 Masking)
+    Client->>App: Request triggering internal error
+    Ctrl-->>EH: Unhandled error thrown
+    EH->>EH: console.error(err) (Logged to server console only)
+    EH-->>Client: 500 Internal Server Error { success: false, error: { code: 'INTERNAL_ERROR', message: 'An unexpected error occurred' } }
 ```
 
 ---
@@ -417,7 +477,9 @@ graph TD
   * Failure: `{ success: false, error: { code: string, message: string, details?: Array<{ field?: string, message: string }> } }`
 * **Rationale:** Allows the frontend `useOpportunities` hook and `OpportunityFormModal` to directly map backend validation errors to form fields, setting `aria-invalid="true"`, dynamic `aria-describedby` links, and 2px Ember borders.
 
-### ADR-04: Parameterized SQL with `ALLOWED_COLUMNS` Whitelist
+### ADR-04: Parameterized SQL with Single-Source `ALLOWED_COLUMNS` Whitelist
 * **Context:** Partial updates (`PUT /api/opportunities/:id`) accept arbitrary subset fields. Direct query construction risks SQL injection or column tampering.
-* **Decision:** The repository validates all field keys against a strict `ALLOWED_COLUMNS` whitelist set, constructs dynamic `SET col = ?` strings with exact parameters, and executes via `pool.execute(sql, params)`.
-* **Rationale:** Completely prevents SQL injection and unintended schema modification while enabling clean partial updates.
+* **Decision:** `ALLOWED_COLUMNS` is defined and exported as a single source of truth in `backend/src/repositories/opportunity.repository.js`. Both the controller (`opportunity.controller.js`) and repository (`opportunity.repository.js`) consume this array:
+  1. The controller filters incoming request body keys to ensure only valid columns are passed down.
+  2. The repository iterates over the whitelist to construct parameterized `${updates.join(', ')}` clauses and executes via `pool.execute(sql, params)`.
+* **Rationale:** Completely prevents SQL injection and mass-assignment vulnerabilities while maintaining clean, DRY architecture.
