@@ -1,0 +1,30 @@
+meta {
+  name: 14 - Extra: POST whitespace title (400)
+  type: http
+  seq: 14
+}
+
+post {
+  url: {{baseUrl}}/api/opportunities
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "   ",
+    "description": "Whitespace title test.",
+    "area": "Testing",
+    "faculty_name": "Dr. Whitespace",
+    "department": "QA",
+    "required_skills": "Testing",
+    "available_positions": 1,
+    "deadline": "2026-12-31"
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.success: eq false
+  res.body.error.code: eq VALIDATION_ERROR
+}

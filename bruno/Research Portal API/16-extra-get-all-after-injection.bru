@@ -1,0 +1,16 @@
+meta {
+  name: 16 - Extra: GET all after injection test (200)
+  type: http
+  seq: 16
+}
+
+get {
+  url: {{baseUrl}}/api/opportunities
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.success: eq true
+}

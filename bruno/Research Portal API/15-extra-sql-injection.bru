@@ -1,0 +1,30 @@
+meta {
+  name: 15 - Extra: POST SQL injection literal (201)
+  type: http
+  seq: 15
+}
+
+post {
+  url: {{baseUrl}}/api/opportunities
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "'; DROP TABLE opportunities;--",
+    "description": "Testing parameterized query handling of SQL injection payload.",
+    "area": "Security",
+    "faculty_name": "Dr. injection",
+    "department": "Cybersecurity",
+    "required_skills": "SQL",
+    "available_positions": 1,
+    "deadline": "2026-12-31"
+  }
+}
+
+assert {
+  res.status: eq 201
+  res.body.success: eq true
+  res.body.data.title: eq '; DROP TABLE opportunities;--
+}

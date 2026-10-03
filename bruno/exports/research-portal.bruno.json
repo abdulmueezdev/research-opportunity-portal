@@ -376,6 +376,135 @@
           }
         ]
       }
+    },
+    {
+      "type": "http-request",
+      "name": "13 - Extra: POST mass assignment blocked",
+      "request": {
+        "url": "{{baseUrl}}/api/opportunities",
+        "method": "POST",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json",
+            "enabled": true
+          }
+        ],
+        "body": {
+          "mode": "json",
+          "json": "{\n  \"id\": 999,\n  \"title\": \"Quantum Error Mitigation\",\n  \"description\": \"Mass assignment test attempting to force ID and created_at.\",\n  \"area\": \"Quantum\",\n  \"faculty_name\": \"Dr. Richard Feynman\",\n  \"department\": \"Physics\",\n  \"required_skills\": \"Quantum Circuits\",\n  \"available_positions\": 1,\n  \"deadline\": \"2026-12-31\",\n  \"created_at\": \"2020-01-01\"\n}"
+        },
+        "assertions": [
+          {
+            "expression": "res.status",
+            "operator": "eq",
+            "value": "201"
+          },
+          {
+            "expression": "res.body.success",
+            "operator": "eq",
+            "value": "true"
+          },
+          {
+            "expression": "res.body.data.id",
+            "operator": "neq",
+            "value": "999"
+          }
+        ]
+      }
+    },
+    {
+      "type": "http-request",
+      "name": "14 - Extra: POST whitespace title (400)",
+      "request": {
+        "url": "{{baseUrl}}/api/opportunities",
+        "method": "POST",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json",
+            "enabled": true
+          }
+        ],
+        "body": {
+          "mode": "json",
+          "json": "{\n  \"title\": \"   \",\n  \"description\": \"Whitespace title test.\",\n  \"area\": \"Testing\",\n  \"faculty_name\": \"Dr. Whitespace\",\n  \"department\": \"QA\",\n  \"required_skills\": \"Testing\",\n  \"available_positions\": 1,\n  \"deadline\": \"2026-12-31\"\n}"
+        },
+        "assertions": [
+          {
+            "expression": "res.status",
+            "operator": "eq",
+            "value": "400"
+          },
+          {
+            "expression": "res.body.success",
+            "operator": "eq",
+            "value": "false"
+          },
+          {
+            "expression": "res.body.error.code",
+            "operator": "eq",
+            "value": "VALIDATION_ERROR"
+          }
+        ]
+      }
+    },
+    {
+      "type": "http-request",
+      "name": "15 - Extra: POST SQL injection literal (201)",
+      "request": {
+        "url": "{{baseUrl}}/api/opportunities",
+        "method": "POST",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json",
+            "enabled": true
+          }
+        ],
+        "body": {
+          "mode": "json",
+          "json": "{\n  \"title\": \"'; DROP TABLE opportunities;--\",\n  \"description\": \"Testing parameterized query handling of SQL injection payload.\",\n  \"area\": \"Security\",\n  \"faculty_name\": \"Dr. injection\",\n  \"department\": \"Cybersecurity\",\n  \"required_skills\": \"SQL\",\n  \"available_positions\": 1,\n  \"deadline\": \"2026-12-31\"\n}"
+        },
+        "assertions": [
+          {
+            "expression": "res.status",
+            "operator": "eq",
+            "value": "201"
+          },
+          {
+            "expression": "res.body.success",
+            "operator": "eq",
+            "value": "true"
+          },
+          {
+            "expression": "res.body.data.title",
+            "operator": "eq",
+            "value": "'; DROP TABLE opportunities;--"
+          }
+        ]
+      }
+    },
+    {
+      "type": "http-request",
+      "name": "16 - Extra: GET all after injection test (200)",
+      "request": {
+        "url": "{{baseUrl}}/api/opportunities",
+        "method": "GET",
+        "assertions": [
+          {
+            "expression": "res.status",
+            "operator": "eq",
+            "value": "200"
+          },
+          {
+            "expression": "res.body.success",
+            "operator": "eq",
+            "value": "true"
+          }
+        ]
+      }
     }
   ]
 }
+
