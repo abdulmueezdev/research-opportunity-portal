@@ -1,0 +1,15 @@
+@import "tailwindcss";
+@import "./styles/fonts.css";
+@import "./styles/theme.css";
+
+* {
+  box-shadow: none !important;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-paper);
+  color: var(--color-carbon);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
