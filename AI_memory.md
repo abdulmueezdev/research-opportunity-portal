@@ -3,7 +3,7 @@
 ## 1. Workspace & Paths (Strict)
 - **Monorepo Root:** `/home/alucard/Documents/Antigraivty_Data/research-opportunity-portal`
 - **Backend Dir:** `research-opportunity-portal/backend`
-- **Frontend Dir:** `research-opportunity-portal/frontend` (not yet scaffolded)
+- **Frontend Dir:** `research-opportunity-portal/frontend`
 - **DB Schema:** `research-opportunity-portal/database/schema.sql`
 - **Docs:** `research-opportunity-portal/docs/`
 - **RESTRICT ALL SEARCHES TO THIS ROOT.** Do not touch `~/.bash_history` or `~/Downloads`.
@@ -35,14 +35,14 @@
 - **P4-S1:** Design system bound to Stitch.
 - **P4-S2:** Stitch S1 Home screen generated.
 - **P4-S3:** All 9 Stitch screens generated: S1-S9.
-- **P4-S4-A:** Design refinement report & extracted tokens.
-- **P4-S4-B:** Anti-slop rules & SEO semantic spec.
-- **P4-S4-C:** TypeScript contracts & Atomic Design component map.
+- **P4-S4 (Design Review Complete):** P4-S4-A, P4-S4-B, P4-S4-C completed.
+- **P5-A:** Frontend Scaffold & Theme configuration (in-progress/completed).
+- **P5-B:** UI Atoms build with strict token compliance (in-progress/completed).
+- **P5-D:** API Client & React state hooks (in-progress/completed).
 
 ## 4. Immediate Next Steps
-- **P5-A:** Scaffold Vite React App with Tailwind v4 & TypeScript.
-- **P5-B:** Build Atoms and Molecules.
-- **P5-C:** Build Organisms & Wire API.
+- **P5-C:** Build Molecules and Organisms (OpportunityCard, Grid, Modals, Empty/Error states).
+- **P5-E:** Wire full UI with live backend API and test end-to-end.
 
 ## 5. Hard Constraints (Never Violate)
 - Assignment PDF > PRD.md > DESIGN.md > AI_CONSTRAINTS.md.
