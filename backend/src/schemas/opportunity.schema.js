@@ -45,7 +45,7 @@ export const createSchema = z.object({
   status: z.enum(['Open', 'Closed'], {
     errorMap: () => ({ message: "Status must be either 'Open' or 'Closed'" }),
   }).default('Open').optional(),
-}).strict({ message: 'Unrecognized field in request body' });
+}).strip();
 
 const updateFields = z.object({
   title: z.string()
