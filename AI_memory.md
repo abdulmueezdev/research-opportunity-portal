@@ -26,13 +26,19 @@
 - **P2-D GET One:** `GET /api/opportunities/:id`. 
   - Validation: `const id = Number(req.params.id); if (!Number.isInteger(id) || id <= 0)` -> 400.
   - Valid ID -> 200. Non-existent -> 404. All 6 edge cases verified.
+- **P2-E:** PUT endpoint implemented.
+- **P2-F:** DELETE endpoint implemented.
+- **P2-G:** Zod validation, 404 fallback, global error handler added. Backend API 100% complete.
+- **P3-A:** Bruno collection scaffolded.
+- **P3-B:** Bruno collection executed against live API.
+- **P4-S0:** Stitch preflight complete.
+- **P4-S1:** Design system bound to Stitch.
+- **P4-S2:** Stitch S1 Home screen generated.
+- **P4-S3:** Stitch remaining 8 screens generated.
 
 ## 4. Immediate Next Steps
-- **P2-E (Backend Maker):** Implement `PUT /api/opportunities/:id` (partial update via `ALLOWED_COLUMNS` whitelist, 200/400/404).
-- **P2-F (Backend Maker):** Implement `DELETE /api/opportunities/:id` (hard delete, 200 with body).
-- **P2-G (Backend Maker):** Add Zod validation schema, 404 fallback, and global error handler.
-- **P3-A (Test Agent):** Scaffold Bruno collection (10 required cases + extras with variables).
-- **P4-S0 (Design Agent):** Preflight Stitch MCP.
+- **P4-S4:** CTO review of Stitch screens.
+- **P5:** Frontend React scaffold and conversion.
 
 ## 5. Hard Constraints (Never Violate)
 - Assignment PDF > PRD.md > DESIGN.md > AI_CONSTRAINTS.md.
