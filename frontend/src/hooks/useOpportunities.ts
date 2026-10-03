@@ -1,3 +1,15 @@
+/**
+ * Research Opportunity Portal - useOpportunities Hook
+ *
+ * Provides reactive state management for research opportunities:
+ * - Status state: 'loading' | 'ready' | 'error'
+ * - Filter state ('All' | 'Open' | 'Closed')
+ * - Search query filtering across title, description, area, faculty, department, required_skills
+ * - Dynamic count aggregates (all, open, closed)
+ * - Optimistic and synchronized CRUD mutations (create, update, remove)
+ * - Automatic fetch on mount with component unmount safety
+ */
+
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import {
   type Opportunity,
@@ -50,6 +62,9 @@ export interface UseOpportunitiesReturn {
 
 /**
  * React hook managing research opportunities state, filtering, search, and CRUD operations.
+ *
+ * @param initialFilter Default filter mode ('All' | 'Open' | 'Closed'), defaults to 'All'
+ * @returns State properties, computed aggregates, search filters, and action handlers
  */
 export function useOpportunities(initialFilter: OpportunityFilter = 'All'): UseOpportunitiesReturn {
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);

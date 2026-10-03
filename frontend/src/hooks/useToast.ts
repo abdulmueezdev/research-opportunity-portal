@@ -1,3 +1,13 @@
+/**
+ * Research Opportunity Portal - useToast Hook
+ *
+ * Provides a notification queue hook with auto-dismissal:
+ * - Toast items: { id, type: 'success' | 'error', message, duration, onRetry? }
+ * - addToast: Queues new toast and arms auto-dismiss timer (default 4000ms)
+ * - removeToast: Immediately dismisses toast and clears timeout
+ * - Cleanup on component unmount
+ */
+
 import { useState, useCallback, useRef, useEffect } from 'react';
 
 export interface Toast {
@@ -23,6 +33,8 @@ const DEFAULT_TOAST_DURATION = 4000;
 
 /**
  * React hook providing a toast notification queue with auto-dismissal.
+ *
+ * @returns Queue of active toasts along with add and dismiss handlers
  */
 export function useToast(): UseToastReturn {
   const [toasts, setToasts] = useState<Toast[]>([]);

@@ -1,3 +1,11 @@
+/**
+ * Research Opportunity Portal - Typed API Client
+ *
+ * Implements type-safe HTTP communication with backend Express REST API.
+ * Adheres strictly to DB schema (using `area`, not `research_area`)
+ * and envelopes defined in frontend/src/types/opportunity.ts.
+ */
+
 import {
   isApiErrorEnvelope,
   type Opportunity,
@@ -29,6 +37,9 @@ export class ApiError extends Error {
   }
 }
 
+/**
+ * Resolved base API URL for opportunities endpoint.
+ */
 export const BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000').replace(/\/+$/, '') + '/api/opportunities';
 
 /**
@@ -103,6 +114,9 @@ async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
 
 /**
  * Retrieves opportunities from the backend, optionally filtered by status.
+ *
+ * @param statusFilter Optional status filter ('All' | 'Open' | 'Closed')
+ * @returns Promise resolving to an array of Opportunity records
  */
 export async function getOpportunities(statusFilter?: OpportunityFilter): Promise<Opportunity[]> {
   const url =
@@ -128,6 +142,9 @@ export async function getOpportunities(statusFilter?: OpportunityFilter): Promis
 
 /**
  * Retrieves a single opportunity by ID.
+ *
+ * @param id Unique numeric identifier of the opportunity
+ * @returns Promise resolving to the matching Opportunity record
  */
 export async function getOpportunityById(id: number): Promise<Opportunity> {
   return request<Opportunity>(`${BASE_URL}/${id}`, {
@@ -140,6 +157,9 @@ export async function getOpportunityById(id: number): Promise<Opportunity> {
 
 /**
  * Creates a new opportunity record.
+ *
+ * @param data Data Transfer Object for creating an opportunity
+ * @returns Promise resolving to the newly created Opportunity record
  */
 export async function createOpportunity(data: CreateOpportunityDTO): Promise<Opportunity> {
   return request<Opportunity>(BASE_URL, {
@@ -154,6 +174,10 @@ export async function createOpportunity(data: CreateOpportunityDTO): Promise<Opp
 
 /**
  * Updates an existing opportunity record with partial or full attributes.
+ *
+ * @param id Numeric ID of the opportunity to update
+ * @param data Partial update DTO
+ * @returns Promise resolving to the updated Opportunity record
  */
 export async function updateOpportunity(
   id: number,
@@ -171,6 +195,9 @@ export async function updateOpportunity(
 
 /**
  * Deletes an opportunity by ID.
+ *
+ * @param id Numeric ID of the opportunity to delete
+ * @returns Promise resolving to the deleted opportunity ID payload { id: number }
  */
 export async function deleteOpportunity(id: number): Promise<{ id: number }> {
   return request<{ id: number }>(`${BASE_URL}/${id}`, {
