@@ -30,15 +30,19 @@
 - **P2-F:** DELETE endpoint implemented.
 - **P2-G:** Zod validation, 404 fallback, global error handler added. Backend API 100% complete.
 - **P3-A:** Bruno collection scaffolded.
-- **P3-B:** Bruno collection executed against live API.
+- **P3-B:** Bruno collection executed against live API — 12/12 pass, 38/38 assertions.
 - **P4-S0:** Stitch preflight complete.
 - **P4-S1:** Design system bound to Stitch.
 - **P4-S2:** Stitch S1 Home screen generated.
-- **P4-S3:** Stitch remaining 8 screens generated.
+- **P4-S3:** All 9 Stitch screens generated: S1-S9.
+- **P4-S4-A:** Design refinement report & extracted tokens.
+- **P4-S4-B:** Anti-slop rules & SEO semantic spec.
+- **P4-S4-C:** TypeScript contracts & Atomic Design component map.
 
 ## 4. Immediate Next Steps
-- **P4-S4:** CTO review of Stitch screens.
-- **P5:** Frontend React scaffold and conversion.
+- **P5-A:** Scaffold Vite React App with Tailwind v4 & TypeScript.
+- **P5-B:** Build Atoms and Molecules.
+- **P5-C:** Build Organisms & Wire API.
 
 ## 5. Hard Constraints (Never Violate)
 - Assignment PDF > PRD.md > DESIGN.md > AI_CONSTRAINTS.md.
