@@ -600,6 +600,7 @@ export function OpportunityFormModal({
             type="button"
             onClick={onClose}
             disabled={isSubmitting}
+            aria-label="Cancel and close form"
           >
             CANCEL
           </OutlinedButton>
@@ -608,6 +609,7 @@ export function OpportunityFormModal({
             disabled={isSubmitting}
             isLoading={isSubmitting}
             loadingText="SAVING..."
+            aria-label={isEdit ? 'Save opportunity changes' : 'Create research opportunity'}
           >
             SAVE OPPORTUNITY
           </PrimaryButton>

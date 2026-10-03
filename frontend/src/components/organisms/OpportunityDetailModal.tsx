@@ -242,7 +242,7 @@ export function OpportunityDetailModal({
 
           {/* Footer: Outlined Cancel/Close, Edit, and Close Opportunity buttons */}
           <footer className="border-t border-carbon bg-paper px-6 py-4 sm:px-8 flex flex-wrap items-center justify-between gap-3 shrink-0">
-            <OutlinedButton onClick={onClose}>
+            <OutlinedButton onClick={onClose} aria-label="Close opportunity details modal">
               CLOSE
             </OutlinedButton>
 
@@ -252,6 +252,7 @@ export function OpportunityDetailModal({
                   onClick={() => {
                     handleCloseAction(opportunity.id);
                   }}
+                  aria-label={`Close listing for ${opportunity.title}`}
                   leftIcon={<Sticker name="lock" size={14} aria-hidden />}
                 >
                   CLOSE OPPORTUNITY
@@ -263,6 +264,7 @@ export function OpportunityDetailModal({
                   onClick={() => {
                     onEdit(opportunity);
                   }}
+                  aria-label={`Edit opportunity: ${opportunity.title}`}
                 >
                   EDIT
                 </OutlinedButton>

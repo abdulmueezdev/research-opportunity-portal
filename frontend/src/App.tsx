@@ -184,7 +184,7 @@ export default function App() {
                 type="button"
                 onClick={() => setSearchQuery('')}
                 aria-label="Clear search"
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-carbon/60 hover:text-carbon cursor-pointer"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-carbon/60 hover:text-carbon cursor-pointer focus-visible:outline-2 focus-visible:outline-voltage-violet rounded-full p-0.5"
               >
                 <Sticker name="close" size={14} aria-hidden />
               </button>

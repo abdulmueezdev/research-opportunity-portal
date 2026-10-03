@@ -133,6 +133,7 @@ export function DeleteConfirmModal({
           autoFocus
           onClick={handleClose}
           disabled={isDeleting}
+          aria-label="Cancel deletion"
           className="w-full sm:w-auto min-w-[120px]"
         >
           CANCEL
@@ -142,6 +143,7 @@ export function DeleteConfirmModal({
           disabled={isDeleting}
           isLoading={isDeleting}
           loadingText="DELETING..."
+          aria-label="Confirm permanent deletion of opportunity"
           className="w-full sm:w-auto min-w-[160px]"
         >
           DELETE OPPORTUNITY
