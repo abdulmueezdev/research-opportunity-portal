@@ -59,12 +59,12 @@ The **University Research Opportunity Portal** is designed to streamline academi
 
    *Alternatively, if using the dedicated portal user:*
    ```bash
-   mysql -u portal -p portal_db < database/schema.sql
+   mysql -u portal -p research_portal < database/schema.sql
    ```
 
 3. Verify the `opportunities` table exists and the initial seed records are loaded:
    ```sql
-   USE portal_db;
+   USE research_portal;
    SELECT id, title, area, faculty_name, status FROM opportunities;
    ```
 
@@ -89,7 +89,7 @@ The **University Research Opportunity Portal** is designed to streamline academi
    DB_PORT=3306
    DB_USER=portal
    DB_PASSWORD=portal_pass
-   DB_NAME=portal_db
+   DB_NAME=research_portal
    FRONTEND_ORIGIN=http://localhost:5173
    ```
 
@@ -169,45 +169,48 @@ All API responses follow a uniform JSON envelope:
 
 ## 5. API Testing (Bruno Collection)
 
-The repository includes a complete Bruno API collection in `bruno/` configured with a development environment (`bruno/environments/dev.bru`).
+The repository includes a complete Bruno API collection in `bruno/Research Portal API`.
 
 ### Automated Test Cases Included:
-1. `01-create-opportunity-1.bru`: POST valid opportunity #1 (Visual SLAM & Drone Navigation).
-2. `02-create-opportunity-2.bru`: POST valid opportunity #2 (Quantum Error Correction).
-3. `03-create-opportunity-3.bru`: POST valid opportunity #3 (Bioinformatics Gene Regulatory Networks).
-4. `04-get-all-opportunities.bru`: GET list of opportunities, validating array structure and 200 OK.
-5. `05-get-opportunity-by-id.bru`: GET opportunity #1, verifying field integrity.
-6. `06-update-opportunity.bru`: PUT partial update (title, available positions, deadline).
-7. `07-close-opportunity.bru`: PUT `{ "status": "Closed" }`, verifying state transition.
-8. `08-delete-opportunity.bru`: DELETE opportunity #3, verifying 200 OK and deletion envelope.
-9. `09-get-deleted-opportunity.bru`: GET deleted opportunity #3, verifying `404 Not Found`.
-10. `10-validation-missing-fields.bru`: POST invalid payload, verifying `400 VALIDATION_ERROR` with field details.
-11. `11-get-invalid-id-format.bru`: GET `/api/opportunities/abc`, verifying `400 VALIDATION_ERROR`.
-12. `12-get-nonexistent-id.bru`: GET `/api/opportunities/999999`, verifying `404 NOT_FOUND`.
+1. `01-post-create-1.bru`: POST valid opportunity #1 (Visual SLAM & Drone Navigation).
+2. `02-post-create-2.bru`: POST valid opportunity #2 (Quantum Error Correction).
+3. `03-post-create-3.bru`: POST valid opportunity #3 (Bioinformatics Gene Regulatory Networks).
+4. `04-get-all.bru`: GET list of opportunities, validating array structure and 200 OK.
+5. `05-get-by-id1.bru`: GET opportunity #1, verifying field integrity.
+6. `06-put-update-id1.bru`: PUT partial update (title, available positions, deadline).
+7. `07-put-close-id1.bru`: PUT `{ "status": "Closed" }`, verifying state transition.
+8. `08-delete-id3.bru`: DELETE opportunity #3, verifying 200 OK and deletion envelope.
+9. `09-get-id3-again.bru`: GET deleted opportunity #3, verifying `404 Not Found`.
+10. `10-post-missing-title-invalid-positions.bru`: POST invalid payload, verifying `400 VALIDATION_ERROR` with field details.
+11. `11-extra-get-abc-400.bru`: GET `/api/opportunities/abc`, verifying `400 VALIDATION_ERROR`.
+12. `12-extra-get-999-404.bru`: GET `/api/opportunities/999`, verifying `404 NOT_FOUND`.
+13. `13-extra-mass-assignment.bru`: POST payload attempting to force `id` and `created_at` (mass-assignment blocked).
+14. `14-extra-whitespace-title.bru`: POST payload with whitespace title, verifying `400 VALIDATION_ERROR`.
+15. `15-extra-sql-injection.bru`: POST payload with SQL injection characters, verifying safe parameterization (201 Created).
+16. `16-extra-get-all-after-injection.bru`: GET all opportunities, verifying database table was not altered or dropped (200 OK).
 
 ### Running with Bruno GUI:
 1. Open [Bruno](https://www.usebruno.com/).
-2. Click **Open Collection** and select the `bruno/` directory in the repository root.
-3. Select the **dev** environment in the top-right corner.
-4. Click **Run Collection** to execute all 12 requests in sequence.
+2. Click **Open Collection** and select the `bruno/Research Portal API` directory in the repository root.
+3. Click **Run Collection** to execute all 16 requests in sequence.
 
 ### Running Headless via CLI:
 ```bash
-npx @usebruno/cli run bruno --env dev
+cd "bruno/Research Portal API" && npx @usebruno/cli run
 ```
-*Result: 12/12 passed (38 assertions passed, 0 failures).*
+*Result: 16/16 passed (all assertions passed, 0 failures).*
 
 ---
 
 ## 6. Known Limitations
 
 - **No Authentication / Authorization:** Per Assignment 1 specification, user accounts, authentication tokens, and role-based permissions (Faculty vs. Student) are out of scope. The interface operates under a trust-based open campus model.
-- **Local Single-Node Deployment:** The application is architected for local server and development execution, with SQLite/MySQL single-instance data persistence.
+- **Local Single-Node Deployment:** The application is architected for local server and development execution, with MySQL single-instance data persistence.
 
 ---
 
 ## 7. Submission Deliverables
 
-- **GitHub Repository:** [https://github.com/placeholder/research-opportunity-portal](https://github.com/placeholder/research-opportunity-portal)
+- **GitHub Repository:** [https://github.com/username/research-opportunity-portal](https://github.com/username/research-opportunity-portal)
 - **One-Minute Demonstration Video:** [https://youtu.be/placeholder-demo-video](https://youtu.be/placeholder-demo-video)
 - **Submission ZIP Archive:** `P24_XXXX_NAME_CLASS.zip` (packaged with full source, database schema, Bruno collection, and documentation).
