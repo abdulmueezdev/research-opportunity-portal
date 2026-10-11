@@ -211,6 +211,6 @@ cd "bruno/Research Portal API" && npx @usebruno/cli run
 
 ## 7. Submission Deliverables
 
-- **GitHub Repository:** [https://github.com/username/research-opportunity-portal](https://github.com/username/research-opportunity-portal)
+- **GitHub Repository:** [https://github.com/abdulmueezdev/research-opportunity-portal](https://github.com/abdulmueezdev/research-opportunity-portal)
 - **One-Minute Demonstration Video:** [https://youtu.be/placeholder-demo-video](https://youtu.be/placeholder-demo-video)
 - **Submission ZIP Archive:** `P24_XXXX_NAME_CLASS.zip` (packaged with full source, database schema, Bruno collection, and documentation).

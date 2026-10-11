@@ -231,7 +231,9 @@ export default function App() {
             Built for CN Assignment #1 · Fall 2026
           </p>
           <a
-            href="#"
+            href="https://github.com/abdulmueezdev/research-opportunity-portal"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-carbon bg-paper text-carbon text-sm font-medium hover:bg-soft-mist transition-colors focus-visible:outline-2 focus-visible:outline-voltage-violet no-underline"
           >
             <svg
