@@ -1,216 +1,93 @@
 # University Research Opportunity Portal
 
-A full-stack, responsive web application for university campuses that enables faculty to publish and manage mentored research openings and allows students to browse, search, filter, and inspect research opportunities.
+A full-stack web application for university campuses that enables faculty to publish and manage mentored research openings and allows students to browse, search, filter, and inspect research opportunities.
 
----
+## Project Overview
+The University Research Opportunity Portal streamlines academic mentorship by providing a real-time, interactive board of research openings across academic departments. Faculty members can create new listings, update requirements, close filled cohorts, and delete obsolete entries. Students can filter opportunities by status (`ALL`, `OPEN`, `CLOSED`), search across titles, departments, skills, and research areas in real time, and view detailed project specifications.
 
-## 1. Project Overview
+## Technology Stack
+- **Backend:** Node.js 20+ (ES Modules) with Express 5.0.1, `mysql2/promise`, Zod 3.24+.
+- **Frontend:** React 19 + TypeScript (strict mode) with Vite 8, Tailwind CSS v4.
+- **Database:** MySQL 8.0+ (Relational `opportunities` table with strict constraints).
+- **Testing:** Bruno API client collection (16 automated test cases).
 
-The **University Research Opportunity Portal** is designed to streamline academic mentorship by providing a real-time, interactive board of undergraduate and graduate research openings across academic departments. Faculty members can create new listings, update requirements, close filled cohorts, and delete obsolete entries. Students can filter opportunities by status (`ALL`, `OPEN`, `CLOSED`), search across titles, departments, skills, and research areas in real time, and view detailed project specifications.
+## Prerequisites
+- Node.js v20.10.0 or higher
+- npm v10.0.0 or higher
+- MySQL Server v8.0+ running locally
 
----
-
-## 2. Technology Stack
-
-### Backend
-- **Runtime & Framework:** Node.js 20+ (ES Modules) with Express 5.0.1
-- **Database Client:** `mysql2/promise` with connection pooling and `dateStrings: true`
-- **Validation:** Zod 3.24+ for strict schema parsing and validation error messages
-- **Architecture:** Controller → Repository pattern (no redundant service layer, no `try/catch` boilerplate thanks to Express 5 native async error forwarding)
-- **Security & Middleware:** `cors`, `dotenv`, global error handler with uniform JSON error envelope, 404 handler
-
-### Frontend
-- **Framework & Build:** React 19 + TypeScript (strict mode, zero `any` types) with Vite 8
-- **Styling & Design System:** Tailwind CSS v4 using the Slush Design System (flat pastel collage, 1px solid black borders, 1600px pill buttons, zero drop shadows, zero gradients)
-- **Typography:** `@fontsource/bowlby-one` for display headlines and `@fontsource-variable/inter` for body and UI elements
-- **Dialogs & Modals:** Native HTML5 `<dialog>` elements with focus trapping, backdrop scrim, and keyboard Escape handling
-- **Accessibility:** Full WCAG 2.1 AA compliance (semantic HTML landmarks, programmatic `<label>` associations, visible Voltage Violet focus outlines, ARIA live regions)
-
-### Database
-- **Database Engine:** MySQL 8.4+
-- **Schema:** Relational table `opportunities` with strict constraints, unsigned identifiers, and auto-managed timestamps (`created_at`, `updated_at`)
-
-### Testing & Verification
-- **API Collection:** Bruno API client collection (`bruno/`) with 12 automated test cases (38 assertions)
-- **DOM & E2E Verification:** Reticle MCP internal SDK driving live browser sessions and asserting DOM/network integrity
-
----
-
-## 3. Setup & Run Instructions
-
-### Prerequisites
-- **Node.js:** v20.10.0 or higher
-- **npm:** v10.0.0 or higher
-- **MySQL Server:** v8.0 or v8.4+ running locally
-
----
+## Setup & Run Instructions
 
 ### Step 1: Database Setup
-
 1. Start your local MySQL service:
    ```bash
    sudo systemctl start mysql
    ```
-
-2. Log into MySQL and import the project schema:
+2. Import the project schema (from the project root):
    ```bash
    mysql -u root -p < database/schema.sql
    ```
 
-   *Alternatively, if using the dedicated portal user:*
-   ```bash
-   mysql -u portal -p research_portal < database/schema.sql
-   ```
-
-3. Verify the `opportunities` table exists and the initial seed records are loaded:
-   ```sql
-   USE research_portal;
-   SELECT id, title, area, faculty_name, status FROM opportunities;
-   ```
-
----
-
 ### Step 2: Backend Configuration & Start
-
 1. Navigate to the backend directory:
    ```bash
    cd backend
    ```
-
 2. Install dependencies:
    ```bash
    npm install
    ```
-
-3. Configure environment variables in `backend/.env`:
+3. Create a `.env` file based on `.env.example` and configure your database credentials:
    ```ini
    PORT=4000
    DB_HOST=localhost
    DB_PORT=3306
-   DB_USER=portal
-   DB_PASSWORD=portal_pass
+   DB_USER=root
+   DB_PASSWORD=your_mysql_password
    DB_NAME=research_portal
    FRONTEND_ORIGIN=http://localhost:5173
    ```
-
 4. Start the backend development server:
    ```bash
    npm run dev
    ```
-   *The backend will boot on `http://localhost:4000` with hot-reloading enabled.*
-
----
+   *(Backend runs on `http://localhost:4000`)*
 
 ### Step 3: Frontend Configuration & Start
-
 1. Open a new terminal and navigate to the frontend directory:
    ```bash
    cd frontend
    ```
-
 2. Install dependencies:
    ```bash
    npm install
    ```
-
-3. (Optional) Configure environment variables in `frontend/.env`:
-   ```ini
-   VITE_API_BASE_URL=http://localhost:4000
-   ```
-
-4. Start the frontend development server:
+3. Start the frontend development server:
    ```bash
    npm run dev
    ```
-   *Vite will start the client at `http://localhost:5173/` (or `http://localhost:5174/` if 5173 is in use).*
+   *(Frontend runs on `http://localhost:5173`)*
 
-5. Open your browser and navigate to the printed URL to interact with the application.
+## REST API Specification
 
----
-
-## 4. REST API Specification
-
-All API responses follow a uniform JSON envelope:
-
-**Success Response Envelope (`200 OK` / `201 Created`):**
-```json
-{
-  "success": true,
-  "data": { ... },
-  "message": "Optional human-readable confirmation"
-}
-```
-
-**Error Response Envelope (`400 Bad Request` / `404 Not Found` / `500 Internal Server Error`):**
-```json
-{
-  "success": false,
-  "error": {
-    "code": "VALIDATION_ERROR | NOT_FOUND | INVALID_JSON | INTERNAL_ERROR",
-    "message": "Detailed error summary",
-    "details": [
-      { "field": "available_positions", "message": "Must be an integer greater than or equal to 0" }
-    ]
-  }
-}
-```
+All API responses follow a uniform JSON envelope.
 
 ### Endpoints
-
-| Method | Endpoint | Description | Status Code |
+| Method | Endpoint | Description | Status Codes |
 |---|---|---|---|
-| `POST` | `/api/opportunities` | Creates a new research opportunity listing | `201 Created` / `400 Bad Request` |
-| `GET` | `/api/opportunities` | Lists all opportunities sorted newest first | `200 OK` |
-| `GET` | `/api/opportunities/:id` | Retrieves full details of a specific opportunity | `200 OK` / `400` / `404 Not Found` |
-| `PUT` | `/api/opportunities/:id` | Partial update of opportunity fields | `200 OK` / `400` / `404 Not Found` |
-| `DELETE` | `/api/opportunities/:id` | Permanently deletes an opportunity | `200 OK` / `400` / `404 Not Found` |
+| `POST` | `/api/opportunities` | Creates a new research opportunity | `201 Created`, `400 Bad Request` |
+| `GET` | `/api/opportunities` | Lists all opportunities (newest first) | `200 OK` |
+| `GET` | `/api/opportunities/:id` | Retrieves details of a specific opportunity | `200 OK`, `400`, `404 Not Found` |
+| `PUT` | `/api/opportunities/:id` | Updates an existing opportunity | `200 OK`, `400`, `404 Not Found` |
+| `DELETE` | `/api/opportunities/:id` | Deletes an opportunity | `200 OK`, `400`, `404 Not Found` |
 
----
-
-## 5. API Testing (Bruno Collection)
-
+## API Testing (Bruno Collection)
 The repository includes a complete Bruno API collection in `bruno/Research Portal API`.
 
-### Automated Test Cases Included:
-1. `01-post-create-1.bru`: POST valid opportunity #1 (Visual SLAM & Drone Navigation).
-2. `02-post-create-2.bru`: POST valid opportunity #2 (Quantum Error Correction).
-3. `03-post-create-3.bru`: POST valid opportunity #3 (Bioinformatics Gene Regulatory Networks).
-4. `04-get-all.bru`: GET list of opportunities, validating array structure and 200 OK.
-5. `05-get-by-id1.bru`: GET opportunity #1, verifying field integrity.
-6. `06-put-update-id1.bru`: PUT partial update (title, available positions, deadline).
-7. `07-put-close-id1.bru`: PUT `{ "status": "Closed" }`, verifying state transition.
-8. `08-delete-id3.bru`: DELETE opportunity #3, verifying 200 OK and deletion envelope.
-9. `09-get-id3-again.bru`: GET deleted opportunity #3, verifying `404 Not Found`.
-10. `10-post-missing-title-invalid-positions.bru`: POST invalid payload, verifying `400 VALIDATION_ERROR` with field details.
-11. `11-extra-get-abc-400.bru`: GET `/api/opportunities/abc`, verifying `400 VALIDATION_ERROR`.
-12. `12-extra-get-999-404.bru`: GET `/api/opportunities/999`, verifying `404 NOT_FOUND`.
-13. `13-extra-mass-assignment.bru`: POST payload attempting to force `id` and `created_at` (mass-assignment blocked).
-14. `14-extra-whitespace-title.bru`: POST payload with whitespace title, verifying `400 VALIDATION_ERROR`.
-15. `15-extra-sql-injection.bru`: POST payload with SQL injection characters, verifying safe parameterization (201 Created).
-16. `16-extra-get-all-after-injection.bru`: GET all opportunities, verifying database table was not altered or dropped (200 OK).
+To run the automated tests:
+1. Open the Bruno desktop app.
+2. Click **Open Collection** and select the `bruno/Research Portal API` directory.
+3. Click **Run Collection** to execute all 16 test cases.
 
-### Running with Bruno GUI:
-1. Open [Bruno](https://www.usebruno.com/).
-2. Click **Open Collection** and select the `bruno/Research Portal API` directory in the repository root.
-3. Click **Run Collection** to execute all 16 requests in sequence.
-
-### Running Headless via CLI:
-```bash
-cd "bruno/Research Portal API" && npx @usebruno/cli run
-```
-*Result: 16/16 passed (all assertions passed, 0 failures).*
-
----
-
-## 6. Known Limitations
-
-- **No Authentication / Authorization:** Per Assignment 1 specification, user accounts, authentication tokens, and role-based permissions (Faculty vs. Student) are out of scope. The interface operates under a trust-based open campus model.
-- **Local Single-Node Deployment:** The application is architected for local server and development execution, with MySQL single-instance data persistence.
-
----
-
-## 7. Submission Deliverables
-
-- **GitHub Repository:** [https://github.com/abdulmueezdev/research-opportunity-portal](https://github.com/abdulmueezdev/research-opportunity-portal)
-- **One-Minute Demonstration Video:** [https://youtu.be/placeholder-demo-video](https://youtu.be/placeholder-demo-video)
-- **Submission ZIP Archive:** `P24_XXXX_NAME_CLASS.zip` (packaged with full source, database schema, Bruno collection, and documentation).
+## GitHub Repository
+[https://github.com/abdulmueezdev/research-opportunity-portal](https://github.com/abdulmueezdev/research-opportunity-portal)
